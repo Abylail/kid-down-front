@@ -23,9 +23,10 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    "~/plugins/apiLayer",
+    {src: "~/plugins/apiLayer", ssr: true},
     "~/plugins/external",
     "~/plugins/filters",
+    "~/plugins/modal",
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -38,6 +39,7 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     "@nuxtjs/style-resources",
+    '@nuxtjs/dotenv'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -48,6 +50,14 @@ export default {
     "@nuxtjs/i18n",
     "vue-toastification/nuxt",
   ],
+
+  router: {
+    middleware: 'global'
+  },
+
+  axios: {
+    baseURL: process.env.BACKEND_URL,
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

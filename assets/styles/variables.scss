@@ -1,11 +1,38 @@
 // Ref: https://github.com/nuxt-community/vuetify-module#customvariables
-//
-// The variables you want to modify
-// $font-size-root: 20px;
-$color--light-gray: #f3f3f3;
-$color--gray: gray;
-$color--blue: #1976d2;
-
 
 // Ширина эрана при которой надо рисовать как телефон или планшет
 $break-point: 1000px;
+
+// Шрифты
+
+// Переменные
+:root {
+  --color-primary: black;
+  --color-reverse: white;
+
+  --background-color-primary: black;
+  --background-color-secondary: #252525;
+  --background-color-extra: #464646;
+  --background-color-reverse: white;
+
+  --text-color-primary: white;
+  --text-color-secondary: #c0c0c0;
+  --text-color-reverse: black;
+  --text-color-extra: #6d6d6d;
+
+  --link-color: rgb(29, 155, 240);
+
+  --loader-color: black;
+  --loader-color-reverse: white;
+
+  --color-blue: rgb(29, 155, 240);
+  --color-white: white;
+
+  --font-size-title: 24px;
+  --font-size-subtitle: 20px;
+  --font-size-text: 16px;
+  --font-size-subtext: 14px;
+  --font-size-mini: 12px;
+
+  --header-height: 50px;
+}

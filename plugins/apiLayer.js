@@ -1,12 +1,19 @@
 
 const createCatcher = toast => err => {
   if (err && err.response && err.response.data && err.response.data.message) {
-    toast.error(err.response.data.message);
+    if (toast) toast.error(err.response.data.message);
+    else console.error(err.response.data.message);
   }
 }
 
 /** Создание options */
-const createOptions = (options, store) => {
+const createOptions = (outerOptions, store) => {
+  let options = {...outerOptions};
+  if (store.getters["user/isAuth"]) {
+    if (!options.headers) options.headers = {};
+    options.headers.token = store.getters["user/getUserToken"];
+    options.headers.username = store.getters["user/getUsername"];
+  }
   return options;
 }
 
