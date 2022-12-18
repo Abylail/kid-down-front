@@ -3,11 +3,20 @@
     <profile-header :value="userInfo"/>
     <profile-info
       :value="userInfo"
+      :editable="isSelfAccount"
+      @editInfo="openEditInfo()"
+      @editAvatar="openEditAvatar($event)"
+      @editWallpaper="openEditWallpaper($event)"
       @subscribeToggle="subscribeToggle()"
       @goFollowers="goFollowers()"
       @goFollowing="goFollowing()"
     />
     <profile-tabs v-model="activeTab" :tabs="tabs"/>
+
+    <!-- Модалки -->
+    <profile-info-edit-modal/>
+    <profile-avatar-modal/>
+    <profile-wallpaper-modal/>
   </div>
 </template>
 
@@ -15,14 +24,13 @@
 import ProfileHeader from "@/components/common/profile/profileHeader";
 import ProfileInfo from "@/components/common/profile/profileInfo";
 import ProfileTabs from "@/components/common/profile/profileTabs";
-import {mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
+import ProfileInfoEditModal from "@/components/common/profile/editModals/profileInfoEditModal";
+import ProfileAvatarModal from "@/components/common/profile/editModals/profileAvatarModal";
+import ProfileWallpaperModal from "@/components/common/profile/editModals/profileWallpaperModal";
 
 export default {
-  components: {ProfileTabs, ProfileHeader, ProfileInfo},
-  middleware({ store, route, redirect }) {
-    // Если он переходит на страницу к юзеру к себе
-    if (route.params.username === store.getters["user/getUsername"]) redirect("/profile");
-  },
+  components: {ProfileWallpaperModal, ProfileAvatarModal, ProfileInfoEditModal, ProfileTabs, ProfileHeader, ProfileInfo},
   data: () => ({
     // Информация пользователя
     userInfo: {},
@@ -32,16 +40,39 @@ export default {
 
     activeTab: "posts",
 
-    tabs: [
-      {id: "posts", name: "Посты"},
-      {id: "media", name: "Медиа"},
-    ],
-
     subscribeTimeout: null,
   }),
   computed: {
+    ...mapGetters({
+      isAuth: "user/isAuth",
+      selfUsername: "user/getUsername",
+      selfUserInfo: "user/getUserInfo",
+    }),
+    isSelfAccount() {
+      return this.isAuth && this.selfUsername === this.username;
+    },
     username() {
       return this.$route.params?.username;
+    },
+    tabs() {
+      if (this.isSelfAccount) return [
+        {id: "posts", name: "Посты"},
+        {id: "media", name: "Медиа"},
+        {id: "likes", name: "Лайки"},
+        {id: "answers", name: "Ответы"}
+      ]
+      return [
+        {id: "posts", name: "Посты"},
+        {id: "media", name: "Медиа"},
+      ]
+    },
+  },
+  watch: {
+    selfUserInfo(val) {
+      if (this.isSelfAccount) {
+        this.userInfo = val;
+        this.userInfoSync = val;
+      }
     }
   },
   methods: {
@@ -80,7 +111,17 @@ export default {
     goFollowing() {
       const fromQuery = {from: Buffer.from(this.$route.fullPath).toString("base64")};
       this.$router.push({path: `/user/${this.username}/subscribes/following`, query: {...fromQuery}});
-    }
+    },
+
+    openEditInfo() {
+      this.$modal.show("profile-info-edit");
+    },
+    openEditAvatar(file) {
+      this.$modal.show("profile-avatar", {file});
+    },
+    openEditWallpaper(file) {
+      this.$modal.show("profile-wallpaper", {file});
+    },
   },
   async asyncData({ store, route }) {
     const userInfo = await store.dispatch("profiles/fetchUser", route.params.username);

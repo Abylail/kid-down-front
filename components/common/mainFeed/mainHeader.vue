@@ -10,7 +10,7 @@
     <div class="main-header__right">
       <div class="main-header__avatar" v-if="isAuth && userInfo.avatar" :style="{backgroundImage: `url(${avatarUrl})`}" @click="goProfile()"></div>
       <base-icon size="30" v-else-if="isAuth && userInfo.avatar" @click="goProfile()">mdi-account-circle</base-icon>
-      <base-icon size="20" v-else @click="goProfile()">mdi-login</base-icon>
+      <base-icon size="20" v-else @click="goProfile()">mdi-account-circle</base-icon>
     </div>
   </header>
 </template>
@@ -25,6 +25,7 @@ export default {
     ...mapGetters({
       isAuth: "user/isAuth",
       userInfo: "user/getUserInfo",
+      selfUsername: "user/getUsername",
     }),
 
     // Урл авы
@@ -35,7 +36,7 @@ export default {
   methods: {
     // Перейти в профиль
     goProfile() {
-      this.$router.push("profile");
+      this.$router.push(`/user/${this.selfUsername}`);
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="login-page">
+  <div class="login-page" @keyup.enter="submitForm()">
     <div class="login-page__go-back" @click="goMain()"><base-icon>mdi-chevron-left</base-icon>Главная</div>
     <div class="login-page__form">
       <h1 class="login-page__title">Вход в tok</h1>
@@ -39,6 +39,7 @@ export default {
 
     // Валидация (true -> okay)
     validate() {
+      if (!this.form.login || !this.form.password) return false;
       return true;
     },
 

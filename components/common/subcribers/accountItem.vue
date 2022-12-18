@@ -6,7 +6,7 @@
       <div class="account-item__username">@{{ value.username }}</div>
     </div>
     <div class="account-item__subscribe">
-      <base-button v-if="selfUsername !== value.username" size="mini" :type="subscribeType" @click.stop="subscribeToggleHandle()">{{ subscribeTitle }}</base-button>
+      <base-button v-if="selfUsername !== value.username" size="mini" :type="subscribeType" min-content @click.stop="subscribeToggleHandle()">{{ subscribeTitle }}</base-button>
     </div>
   </div>
 </template>
@@ -68,7 +68,7 @@ $height: 35px;
 .account-item {
   padding: 12px;
   display: grid;
-  grid-template-columns: $height 1fr 100px;
+  grid-template-columns: $height 1fr 120px;
   grid-column-gap: 12px;
   border-bottom: 1px solid var(--background-color-secondary);
   height: $height;

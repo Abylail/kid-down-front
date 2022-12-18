@@ -43,7 +43,7 @@ export const actions = {
   },
 
   // Авторизация по токену + информация пользователя
-  async tokenAuth({ commit, state, getters }, outerToken = state.userInfo?.token) {
+  async tokenAuth({ commit, state, getters, dispatch }, outerToken = state.userInfo?.token) {
     let token = outerToken || this.$cookies.get("userToken");
     if (!token) return;
     await this.$api.$post("/api/v1/auth/login/token", {token})
@@ -51,6 +51,9 @@ export const actions = {
         if (!err) {
           this.$cookies.set("userToken", body.token);
           commit("set", ["userInfo", body]);
+        }
+        else {
+          dispatch("logout");
         }
       })
   },
@@ -66,6 +69,12 @@ export const actions = {
           resolve(!err);
         })
     })
+  },
+
+  // Выйти из аккаунта
+  logout({ commit }) {
+    commit("set", ["userInfo", null]);
+    this.$cookies.remove("userToken");
   },
 
   // Сохранения информации профиля (имя + описание)

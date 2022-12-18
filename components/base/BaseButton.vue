@@ -50,6 +50,7 @@ export default {
   border-radius: 100px;
   transition: .1s;
   border: none;
+  white-space: nowrap;
   &:active {opacity: .7}
 
   // TYPES
