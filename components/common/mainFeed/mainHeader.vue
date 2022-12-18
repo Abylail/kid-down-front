@@ -36,7 +36,8 @@ export default {
   methods: {
     // Перейти в профиль
     goProfile() {
-      this.$router.push(`/user/${this.selfUsername}`);
+      if (!this.isAuth) this.$router.push(`/login`);
+      else this.$router.push(`/user/${this.selfUsername}`);
     }
   }
 }
