@@ -12,6 +12,11 @@
       @goFollowing="goFollowing()"
     />
     <profile-tabs v-model="activeTab" :tabs="tabs"/>
+    <profile-tabs-content :value="activeTab" :tabs="tabs">
+      <template v-slot:posts>
+        <profile-feed :username="username"/>
+      </template>
+    </profile-tabs-content>
 
     <!-- Модалки -->
     <profile-info-edit-modal/>
@@ -28,9 +33,14 @@ import {mapActions, mapGetters} from "vuex";
 import ProfileInfoEditModal from "@/components/common/profile/editModals/profileInfoEditModal";
 import ProfileAvatarModal from "@/components/common/profile/editModals/profileAvatarModal";
 import ProfileWallpaperModal from "@/components/common/profile/editModals/profileWallpaperModal";
+import ProfileTabsContent from "@/components/common/profile/profileTabsContent";
+import ProfileFeed from "@/components/common/profile/profileFeed";
 
 export default {
-  components: {ProfileWallpaperModal, ProfileAvatarModal, ProfileInfoEditModal, ProfileTabs, ProfileHeader, ProfileInfo},
+  components: {
+    ProfileFeed,
+    ProfileTabsContent,
+    ProfileWallpaperModal, ProfileAvatarModal, ProfileInfoEditModal, ProfileTabs, ProfileHeader, ProfileInfo},
   data: () => ({
     // Информация пользователя
     userInfo: {},

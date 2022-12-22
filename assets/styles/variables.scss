@@ -10,10 +10,11 @@ $break-point: 1000px;
   --color-primary: black;
   --color-reverse: white;
 
-  --background-color-primary: black;
+  --background-color-primary: #111111;
   --background-color-secondary: #252525;
   --background-color-extra: #464646;
   --background-color-reverse: white;
+  --background-transparent: rgba(0, 0, 0, .5);
 
   --text-color-primary: white;
   --text-color-secondary: #c0c0c0;

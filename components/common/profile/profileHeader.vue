@@ -44,7 +44,8 @@ export default {
   height: calc(var(--header-height) - 2*8px);
   padding: 8px 0;
   border-bottom: 1px solid var(--background-color-secondary);
-  background: var(--background-color-primary);
+  background: var(--background-transparent);
+  backdrop-filter: blur(3px);
 
   &__left {
     display: flex;

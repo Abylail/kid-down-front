@@ -55,6 +55,8 @@ $side-padding-size: 16px;
   height: calc(var(--header-height) - 2*8px);
   padding: 8px $side-padding-size;
   border-bottom: 1px solid var(--background-color-secondary);
+  background: var(--background-transparent);
+  backdrop-filter: blur(3px);
 
   &__left {
     display: flex;
