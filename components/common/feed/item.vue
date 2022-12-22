@@ -68,7 +68,7 @@ export default {
     timeAgo() {
       const minutesAgo = (new Date().getTime() - new Date(this.value.created_at).getTime()) / 60000;
       if (minutesAgo < 60) return `${Math.ceil(minutesAgo)} минут назад`
-      if (minutesAgo < 24 * 60) return `${Math.abs(minutesAgo/60)} часов назад`;
+      if (minutesAgo < 24 * 60) return `${Math.ceil(minutesAgo/60)} часов назад`;
       return "больше дня назад";
     }
   },
