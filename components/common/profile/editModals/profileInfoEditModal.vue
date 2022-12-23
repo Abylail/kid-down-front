@@ -6,10 +6,13 @@
         <base-input
           title="Имя"
           v-model="form.name"
+          background no-border
         />
         <base-textarea
           title="Описание"
           v-model="form.bio"
+          rows="4"
+          background no-border
         />
       </div>
 

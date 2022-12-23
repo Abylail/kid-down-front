@@ -22,6 +22,18 @@ export const mutations = {
 
 export const actions = {
 
+  // Создать пост
+  async createPost({}, {text, picture, custom_category, category_code}) {
+    let myPicture = picture && {...picture};
+    if (myPicture) myPicture.buffer = myPicture.buffer.split(",")[1];
+    await this.$api.$post("/api/v1/post/add", {text, picture: myPicture, custom_category, category_code})
+      .then(({err, body}) => {
+        if (!err) {
+          console.log(body);
+        }
+      })
+  },
+
   // Получить основную ленту
   async fetchMainFeed({ commit }) {
     await this.$api.$get("/api/v1/feed/main")

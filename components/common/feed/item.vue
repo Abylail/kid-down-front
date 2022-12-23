@@ -2,11 +2,12 @@
   <div class="feed-item">
 
     <!-- avatar-wrapper -->
-    <div class="feed-item__avatar-wrapper" @click.prevent="goAuthorProfile()">
+    <div class="feed-item__avatar-wrapper">
       <div
         class="feed-item__avatar"
         v-if="avatarUrl"
         :style="{backgroundImage: `url(${avatarUrl})`}"
+        @click.prevent="goAuthorProfile()"
       />
     </div>
 
@@ -14,8 +15,8 @@
     <div class="feed-item__main">
 
       <!-- HEAD -->
-      <div class="feed-item__head" @click.prevent="goAuthorProfile()">
-        <div>
+      <div class="feed-item__head">
+        <div @click.prevent="goAuthorProfile()">
           <span class="feed-item__name">{{ value.author_name  }}</span>
           <span class="feed-item__username">@{{ value.author_username  }}</span>
         </div>
@@ -60,13 +61,14 @@ export default {
 
     // Ссылка на картинку контента
     pictureUrl() {
-      if (!this.value.picture) return null;
-      return process.env.CDN_URL + this.value.picture;
+      if (!this.value.picture.path) return null;
+      return process.env.CDN_URL + this.value.picture.path;
     },
 
     // Времени
     timeAgo() {
       const minutesAgo = (new Date().getTime() - new Date(this.value.created_at).getTime()) / 60000;
+      if (minutesAgo < 1) return "прям только что";
       if (minutesAgo < 60) return `${Math.ceil(minutesAgo)} минут назад`
       if (minutesAgo < 24 * 60) return `${Math.ceil(minutesAgo/60)} часов назад`;
       return "больше дня назад";
@@ -124,7 +126,7 @@ $avatar-size: 40px;
     margin-top: 5px;
     width: 100%;
     border-radius: 5px;
-    max-height: 400px;
+    max-height: var(--picture-post-max-height);
   }
 }
 </style>

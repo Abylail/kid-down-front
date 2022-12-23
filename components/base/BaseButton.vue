@@ -31,7 +31,7 @@ export default {
     size: {
       type: String,
       default: "medium",
-      validator: s => ["medium", "mini"].includes(s),
+      validator: s => ["big", "medium", "mini"].includes(s),
     }
   },
   computed: {
@@ -69,6 +69,12 @@ export default {
   // SIZES
   &--size-medium {
     padding: 4px 16px;
+    line-height: 24px;
+    font-size: var(--font-size-text);
+    min-height: 32px;
+  }
+  &--size-big {
+    padding: 8px 0;
     line-height: 24px;
     font-size: var(--font-size-text);
     min-height: 32px;

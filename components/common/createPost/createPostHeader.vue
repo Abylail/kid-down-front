@@ -4,7 +4,7 @@
       <base-icon @click="goBackHandle()">mdi-arrow-left</base-icon>
     </div>
     <div class="create-post-header__center">
-      <div class="create-post-header__title">Создание поста</div>
+      <div class="create-post-header__title">{{ title }}</div>
       <div class="create-post-header__subtitle">@{{ selfUsername }}</div>
     </div>
   </header>
@@ -16,6 +16,12 @@ import {mapGetters} from "vuex";
 export default {
   name: "createPostHeader",
   components: {BaseIcon},
+  props: {
+    title: {
+      type: String,
+      default: "Создание поста"
+    }
+  },
   computed: {
     ...mapGetters({
       selfUsername: "user/getUsername",
@@ -24,7 +30,7 @@ export default {
   methods: {
     // Кнопка назад
     goBackHandle() {
-      this.$router.push("/");
+      this.$emit("goBack");
     }
   }
 }
@@ -34,6 +40,7 @@ export default {
 .create-post-header {
   position: fixed;
   top: 0;
+  left: 0;
   z-index: 2;
   display: grid;
   grid-template-columns: var(--header-height) 1fr var(--header-height);

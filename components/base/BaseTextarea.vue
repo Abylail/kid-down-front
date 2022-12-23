@@ -3,9 +3,10 @@
     <div v-if="title" class="base-textarea__title" :class="{active: titleTop}">{{ title }}</div>
     <textarea
       class="base-textarea__input"
+      :class="[{'base-textarea__input--background': background}, {'base-textarea__input--no-border': noBorder}]"
       :value="value"
       :placeholder="placeholder"
-      rows="1"
+      :rows="rows"
       ref="input"
       @input="inputHandle($event)"
       @focus="focused"
@@ -36,16 +37,35 @@ export default {
     max: {
       type: Number,
       default: null
+    },
+    rows: { // Колличество начальных линий (минимальные для показа)
+      type: [String, Number],
+      default: "1"
+    },
+    background: { // Заполнить зфон
+      type: Boolean,
+      default: false
+    },
+    noBorder: { // Скрыть border
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({
     // Инпут активен
     active: false,
+
+    lineHeight: 21,
   }),
   computed: {
     // Тайтл вверх
     titleTop() {
       return !!this.value || this.active;
+    },
+
+    // Минимальная высота
+    minHeight() {
+      return ((parseInt(this.rows) || 1) * this.lineHeight) + 22;
     },
   },
   methods: {
@@ -59,7 +79,9 @@ export default {
     heightControl() {
       if (!this.$refs.input) return;
       this.$refs.input.style.height = "0";
-      this.$refs.input.style.height = `${this.$refs.input.scrollHeight - 20}px`;
+      let inputHeight = this.$refs.input.scrollHeight;
+      if (inputHeight < this.minHeight) inputHeight = this.minHeight;
+      this.$refs.input.style.height = `${inputHeight - 22}px`;
     },
 
     // На фокусе
@@ -72,6 +94,14 @@ export default {
       this.active = false;
       this.$emit("blur");
     },
+
+    // Сфокусироваться на инпуте
+    $focus() {
+      this.$refs.input.focus();
+    }
+  },
+  mounted() {
+    this.heightControl()
   }
 }
 </script>
@@ -110,7 +140,13 @@ $bottom-space: 4px;
     height: auto;
     line-height: 21px;
     resize: none;
-    max-height: 152px;
+
+    &--no-border {
+      border: none;
+    }
+    &--background {
+      background: var(--background-color-secondary);
+    }
   }
 
 }

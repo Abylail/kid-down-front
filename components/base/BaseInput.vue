@@ -1,11 +1,13 @@
 <template>
   <div class="base-input">
-    <div v-if="title" class="base-input__title" :class="{active: titleTop}">{{ title }}</div>
+    <div v-if="title" class="base-input__title" :class="{active: titleTop}" @click="$focus()">{{ title }}</div>
     <input
       class="base-input__input"
+      :class="[{'base-input__input--background': background}, {'base-input__input--no-border': noBorder}]"
       :value="value"
       :type="type"
       :placeholder="placeholder"
+      ref="input"
       @input="inputHandle($event.target.value)"
       @focus="active = true"
       @blur="active = false"
@@ -31,6 +33,14 @@ export default {
     placeholder: {
       type: String,
       default: null
+    },
+    background: { // Заполнить зфон
+      type: Boolean,
+      default: false
+    },
+    noBorder: { // Скрыть border
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({
@@ -47,6 +57,11 @@ export default {
     // Ввод
     inputHandle(val) {
       this.$emit("input", val);
+    },
+
+    // Сфокусироваться на инпуте
+    $focus() {
+      this.$refs.input.focus();
     }
   }
 }
@@ -84,6 +99,14 @@ $top-space: 18px;
     border-radius: 5px;
     height: 21px;
     line-height: 21px;
+    z-index: 1;
+
+    &--no-border {
+      border: none;
+    }
+    &--background {
+      background: var(--background-color-secondary);
+    }
   }
 
 }
