@@ -113,14 +113,12 @@ export default {
 
     // Перейти в подписчики
     goFollowers() {
-      const fromQuery = {from: Buffer.from(this.$route.fullPath).toString("base64")};
-      this.$router.push({path: `/user/${this.username}/subscribes/followers`, query: {...fromQuery}});
+      this.$router.push({path: `/user/${this.username}/subscribes/followers`});
     },
 
     // Перейти в подписки
     goFollowing() {
-      const fromQuery = {from: Buffer.from(this.$route.fullPath).toString("base64")};
-      this.$router.push({path: `/user/${this.username}/subscribes/following`, query: {...fromQuery}});
+      this.$router.push({path: `/user/${this.username}/subscribes/following`});
     },
 
     openEditInfo() {

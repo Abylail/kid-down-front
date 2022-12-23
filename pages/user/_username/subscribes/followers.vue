@@ -19,8 +19,7 @@ export default {
   },
   methods: {
     goBack() {
-      const from = this.$route.query?.from && Buffer.from(this.$route.query.from, 'base64').toString('ascii')
-      this.$router.push(from || `/user/${this.username}`);
+      this.$goBack(`/user/${this.username}`);
     }
   }
 }

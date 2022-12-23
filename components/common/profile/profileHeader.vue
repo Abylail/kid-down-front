@@ -25,8 +25,7 @@ export default {
   methods: {
     // Кнопка назад
     goBackHandle() {
-      const from = this.$route.query?.from && Buffer.from(this.$route.query.from, 'base64').toString('ascii')
-      this.$router.push(from || "/");
+      this.$goBack("/");
     }
   }
 }
