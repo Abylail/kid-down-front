@@ -23,7 +23,7 @@
           size="big"
           type="primary"
           v-if="canSecondStep"
-          @click="submitPostHandle()"
+          @click="goSecondStep()"
         >Далее</base-button>
       </fade>
     </div>
@@ -35,6 +35,7 @@
       <base-input
         title="Введите название категории или выберите"
         v-model="form.custom_category"
+        ref="categoryInput"
       />
 
       <fade>
@@ -74,7 +75,11 @@ export default {
 
     step: 1,
 
+    categoryList: [],
+
     isLoading: false,
+
+    isCategoryLoading: false,
   }),
   computed: {
     // Может ли перейти к след шагу
@@ -87,14 +92,30 @@ export default {
       return true;
     },
   },
+  watch: {
+    "form.custom_category"(val) {
+      this.fetchCategories();
+    }
+  },
   methods: {
     ...mapActions({
       _createPost: "feed/createPost",
+      _fetchCategories: "feed/categories/fetchCategories",
     }),
+
+    // Получить список категорий
+    async fetchCategories() {
+      this.isCategoryLoading = true;
+      this.categoryList = await this._fetchCategories(this.custom_category);
+      this.isCategoryLoading = false;
+    },
 
     // Перейти на след шаг
     goSecondStep() {
       this.step = 2;
+      this.$nextTick(() => {
+        this.$refs.categoryInput.$focus();
+      })
     },
 
     // Закинуть пост
@@ -107,6 +128,7 @@ export default {
   },
   mounted() {
     this.$refs.text.$focus();
+    this.fetchCategories();
   }
 }
 </script>

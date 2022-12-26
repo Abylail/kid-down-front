@@ -3,7 +3,7 @@
     <div class="login-page__go-back" @click="goMain()"><base-icon>mdi-chevron-left</base-icon>Главная</div>
     <div class="login-page__form">
       <h1 class="login-page__title">Вход в tok</h1>
-      <base-input title="Логин" v-model="form.login"/>
+      <base-input title="Логин" ref="login" v-model="form.login"/>
       <base-input title="Пароль" v-model="form.password" type="password"/>
       <base-button class="login-page__submit" :loading="isLoading" type="primary" @click="submitForm()">Войти</base-button>
       <div class="login-page__extra">Если нет учетки, можно и <nuxt-link to="/registration">зарегестрироваться</nuxt-link></div>
@@ -62,6 +62,11 @@ export default {
       this.isLoading = false;
     },
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.$refs.login.$focus();
+    })
+  }
 }
 </script>
 

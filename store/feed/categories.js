@@ -1,7 +1,7 @@
 export const actions = {
 
   // Поиск категорий
-  searchCategory({}, searchQuery = "") {
+  fetchCategories({}, searchQuery = null) {
     return new Promise(resolve => {
       this.$api.$post("/api/v1/search/category", {query: searchQuery})
         .then(({err, body}) => {

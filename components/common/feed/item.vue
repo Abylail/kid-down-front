@@ -6,7 +6,7 @@
       <div
         class="feed-item__avatar"
         v-if="avatarUrl"
-        :style="{backgroundImage: `url(${avatarUrl})`}"
+        :lazy-background="avatarUrl"
         @click.prevent="goAuthorProfile()"
       />
     </div>
@@ -30,9 +30,10 @@
         <div class="feed-item_text">{{ value.text }}</div>
         <img
           class="feed-item__picture"
-          v-if="pictureUrl"
-          :src="pictureUrl"
+          v-show="pictureUrl"
+          :data-src="pictureUrl"
           :alt="value.author_username"
+          v-lazy-load
         />
       </div>
 
@@ -72,13 +73,13 @@ export default {
       if (minutesAgo < 60) return `${Math.ceil(minutesAgo)} минут назад`
       if (minutesAgo < 24 * 60) return `${Math.ceil(minutesAgo/60)} часов назад`;
       return "больше дня назад";
-    }
+    },
   },
   methods: {
     // Перейти в профиль автора
     goAuthorProfile() {
       this.$router.push(`/user/${this.value.author_username}`)
-    }
+    },
   }
 }
 </script>

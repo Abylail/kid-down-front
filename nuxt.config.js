@@ -40,7 +40,7 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     "@nuxtjs/style-resources",
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -50,6 +50,7 @@ export default {
     "@nuxtjs/axios",
     "@nuxtjs/i18n",
     "vue-toastification/nuxt",
+    'nuxt-lazy-load',
   ],
 
   router: {
