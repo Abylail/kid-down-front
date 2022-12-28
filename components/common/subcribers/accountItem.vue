@@ -50,8 +50,7 @@ export default {
   methods: {
     // Перейти в аккаунт
     goAccount() {
-      const from = Buffer.from(this.$route.fullPath).toString("base64");
-      this.$router.push(`/user/${this.value.username}?from=${from}`)
+      this.$router.push(`/user/${this.value.username}`)
     },
 
     // Подписаться/отписаться кнопка
