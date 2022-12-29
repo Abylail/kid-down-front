@@ -52,16 +52,6 @@
           @click="selectCategory(category)"
         >{{ category.name }}</div>
       </div>
-
-<!--      <fade>-->
-<!--        <base-button-->
-<!--          class="create-post__submit"-->
-<!--          size="big"-->
-<!--          type="primary"-->
-<!--          v-if="canCreatePost"-->
-<!--          @click="submitPostHandle()"-->
-<!--        >Закинуть</base-button>-->
-<!--      </fade>-->
     </div>
   </div>
 </template>

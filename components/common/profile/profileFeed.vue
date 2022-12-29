@@ -16,6 +16,8 @@ export default {
     }
   },
   data: () => ({
+    // Список постов
+    list: [],
     isLoading: false,
   }),
   computed: {
@@ -28,12 +30,6 @@ export default {
     isSelfUsername() {
       return this.isAuth && this.username === this.selfUsername
     },
-
-    // Список постов
-    list() {
-      if (this.isSelfUsername) return this._myList;
-      return [];
-    }
   },
   methods: {
     ...mapActions({
@@ -43,7 +39,7 @@ export default {
     // Запросить список
     async fetchUserList() {
       this.isLoading = true;
-      await this._fetchUserList(this.username);
+      this.list = await this._fetchUserList(this.username);
       this.isLoading = false;
     }
   },
