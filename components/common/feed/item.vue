@@ -30,7 +30,7 @@
         <div class="feed-item_text">{{ value.text }}</div>
         <img
           class="feed-item__picture"
-          v-show="pictureUrl"
+          v-if="pictureUrl"
           :data-src="pictureUrl"
           :alt="value.author_username"
           v-lazy-load
@@ -80,7 +80,7 @@ export default {
     goAuthorProfile() {
       this.$router.push(`/user/${this.value.author_username}`)
     },
-  }
+  },
 }
 </script>
 
@@ -98,6 +98,10 @@ $avatar-size: 40px;
     background-size: cover;
     background-position: center;
     border-radius: 50%;
+  }
+
+  &__main {
+    width: 100%;
   }
 
   &__name {
@@ -125,7 +129,7 @@ $avatar-size: 40px;
 
   &__picture {
     margin-top: 5px;
-    width: 100%;
+    max-width: 100%;
     border-radius: 5px;
     max-height: var(--picture-post-max-height);
   }

@@ -42,13 +42,15 @@ export default {
 
   // DEFAULT
   &--default {
+    $border-width: 5px;
     &:after {
       content: " ";
       display: block;
-      width: 80%;
-      height: 80%;
+      width: calc(100% - #{$border-width*2});
+      height: calc(100% - #{$border-width*2});
+      position: relative;
       border-radius: 50%;
-      border: 6px solid;
+      border: $border-width solid;
       border-color: var(--loader-color) transparent var(--loader-color) transparent;
       animation: default-animation 1.2s linear infinite;
     }

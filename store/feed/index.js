@@ -15,8 +15,13 @@ export const getters = {
 }
 
 export const mutations = {
+  // Вставить значение
   set(state, [namespace, value]) {
     state[namespace] = value;
+  },
+  // Дополнить список
+  supplement(state, [namespace, value]) {
+    state[namespace] = [...state[namespace], ...value];
   }
 }
 
@@ -34,14 +39,18 @@ export const actions = {
       })
   },
 
-  // Получить основную ленту
-  async fetchMainFeed({ commit }) {
-    await this.$api.$get("/api/v1/feed/main")
-      .then(({err, body}) => {
-        if (!err) {
-          commit("set", ["mainList", body]);
-        }
-      })
+  // Получить основную ленту (возвращает есть ли еще в пагинации)
+  fetchMainFeed({ commit }, page = 1) {
+    return new Promise(resolve => {
+      this.$api.$get("/api/v1/feed/main", {params: {page}})
+        .then(({err, body}) => {
+          if (!err) {
+            if (page === 1) commit("set", ["mainList", body]);
+            else commit("supplement", ["mainList", body]);
+          }
+          resolve(!err && body.length)
+        })
+    })
   },
 
   // Получить лист по username

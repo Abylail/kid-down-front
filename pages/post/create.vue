@@ -154,8 +154,10 @@ export default {
     }
   },
   mounted() {
-    this.$refs.text.$focus();
     this.fetchCategories();
+    setTimeout(() => {
+      this.$refs.text.$focus();
+    }, 100);
   }
 }
 </script>

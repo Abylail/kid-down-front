@@ -1,6 +1,6 @@
 <template>
   <div class="profile-feed">
-    <list :value="list"/>
+    <list :value="list" :initial-loader="isLoading"/>
   </div>
 </template>
 
@@ -18,7 +18,7 @@ export default {
   data: () => ({
     // Список постов
     list: [],
-    isLoading: false,
+    isLoading: true,
   }),
   computed: {
     ...mapGetters({

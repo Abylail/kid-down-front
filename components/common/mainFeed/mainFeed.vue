@@ -6,7 +6,11 @@
       <base-icon>mdi-pencil-box-outline</base-icon>
     </nuxt-link>
 
-    <list :value="list"/>
+    <list
+      :value="list"
+      :loading="isLoading"
+      @paginate="fetchMainFeed()"
+    />
   </div>
 </template>
 
@@ -18,7 +22,9 @@ export default {
   name: "feed",
   components: {List, BaseIcon},
   data: () => ({
-    isLoading: false,
+    page: 1,
+    isHaveMore: true,
+    isLoading: true,
   }),
   computed: {
     ...mapGetters({
@@ -32,14 +38,15 @@ export default {
 
     // Получить ленту
     async fetchMainFeed() {
+      if (!this.isHaveMore) return;
       this.isLoading = true;
-      await this._fetchMainFeed();
+      this.isHaveMore = await this._fetchMainFeed(this.page++);
       this.isLoading = false;
-    }
+    },
   },
-  mounted() {
+  created() {
     this.fetchMainFeed();
-  }
+  },
 }
 </script>
 
@@ -56,6 +63,7 @@ export default {
     background: var(--background-color-secondary);
     color: var(--text-color-secondary);
     font-size: var(--font-size-subtext);
+    line-height: var(--font-size-text);
     text-decoration: none;
     text-align: center;
   }
