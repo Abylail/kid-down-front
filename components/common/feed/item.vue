@@ -74,15 +74,22 @@
 
     </div>
 
+    <fade>
+      <div class="feed-item__big-like" v-if="showBigLikeAnimation">
+        <base-icon size="40">mdi-heart</base-icon>
+      </div>
+    </fade>
+
   </div>
 </template>
 
 <script>
 import BaseIcon from "@/components/base/BaseIcon";
+import Fade from "@/components/transitions/fade";
 import {mapActions} from "vuex";
 export default {
   name: "item",
-  components: {BaseIcon},
+  components: {BaseIcon, Fade},
   data: () => ({
     // Лайкнуто ли (только с изменениями)
     liked: null,
@@ -97,6 +104,9 @@ export default {
     contentClickCount: 0,
     // Таймаут для контент
     contentClickTimer: null,
+
+    // Показать анимацию большого лайка
+    showBigLikeAnimation: false,
   }),
   props: {
     value: {
@@ -128,10 +138,9 @@ export default {
 
     // Пропорция картинки
     pictureRatio() {
-      return null;
-      // if (!this.value.picture.height || !this.value.picture.width) return null;
+      if (!this.value.picture.height || !this.value.picture.width) return null;
       // console.log(this.value.text, this.value.picture.height/this.value.picture.width)
-      // return this.value.picture.height/this.value.picture.width;
+      return `${this.value.picture.width}/${this.value.picture.height}`;
     },
 
     // Лайкнуто ли
@@ -181,6 +190,12 @@ export default {
     // Большой лайк
     contentLike() {
       this.toggleLikeHandle();
+      if (this.isLiked) this.showBigLikeAnimation = true;
+      else this.showBigLikeAnimation = false;
+
+      setTimeout(() => {
+        this.showBigLikeAnimation = false;
+      }, 300);
     },
 
     // Перейти в страницу поста
@@ -223,6 +238,7 @@ export default {
 <style lang="scss" scoped>
 $avatar-size: 40px;
 .feed-item {
+  position: relative;
   display: flex;
   padding: 15px;
   border-top: 1px solid var(--background-color-secondary);
@@ -265,13 +281,14 @@ $avatar-size: 40px;
 
   &__picture {
     display: block;
+    object-fit: cover;
     margin-top: 5px;
-    min-width: 100%;
+    max-width: 100%;
     width: 100%;
     border-radius: 5px;
     background: var(--background-color-secondary);
     color:transparent;
-    //max-height: var(--picture-post-max-height);
+    max-height: var(--picture-post-max-height);
   }
 
   &__tools {
@@ -300,6 +317,18 @@ $avatar-size: 40px;
   &__liked-count {
     text-align: left;
     font-size: var(--font-size-mini);
+  }
+
+  &__big-like {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--background-transparent);
   }
 }
 
