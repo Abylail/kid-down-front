@@ -174,6 +174,7 @@ export default {
     ...mapActions({
       _like: "feed/liking/like",
       _unlike: "feed/liking/unlike",
+      _bridgeInfo: "post/bridgeInfo",
     }),
 
     // Клик по контенту
@@ -198,8 +199,19 @@ export default {
       }, 300);
     },
 
+    // Передача информации о посте до перехода
+    bridgeInfo() {
+      this._bridgeInfo({
+        ...this.value,
+        like_count: this.likesCount,
+        my_like: this.isLiked,
+      })
+    },
+
     // Перейти в страницу поста
     goPostPage() {
+      // Закидываю информацию о посте для перехода на страницу
+      this.bridgeInfo();
       this.$router.push(`/post/${this.value.code}`);
     },
 

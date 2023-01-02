@@ -67,6 +67,7 @@ $side-padding-size: 16px;
     display: flex;
     align-items: center;
     justify-content: right;
+    text-align: right;
   }
 
   &__avatar {
