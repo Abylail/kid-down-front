@@ -16,10 +16,10 @@
 
       <!-- Верхняя часть (Имя автора, юзернейм, темв) -->
       <div class="feed-item__head">
-        <div @click.prevent="goAuthorProfile()">
-          <span class="feed-item__name">{{ value.author_name  }}</span>
-          <span class="feed-item__username">@{{ value.author_username  }}</span>
-        </div>
+          <div @click.prevent="goAuthorProfile()">
+            <span class="feed-item__name">{{ value.author_name  }}</span>
+            <span class="feed-item__username">@{{ value.author_username  }}</span>
+          </div>
         <div>
           <!-- Тема (категория) -->
           <span class="feed-item__category" v-if="value.category_name">{{ value.category_name }}</span>
@@ -27,7 +27,7 @@
       </div>
 
       <!-- Контент (текст и фото) -->
-      <div class="feed-item__content">
+      <div class="feed-item__content" @click="contentClickHandle">
         <div class="feed-item_text">{{ value.text }}</div>
         <img
           class="feed-item__picture skeleton"
@@ -39,27 +39,38 @@
         >
       </div>
 
-      <!-- Когда выложенно -->
-      <div class="feed-item__time">{{ timeAgo }}</div>
 
-
-      <!-- Взаимодействия (Лайк, коменты) -->
       <div class="feed-item__tools">
 
-        <!-- Коммент -->
-        <button class="feed-item__tool">
-          <base-icon size="22">mdi-comment-outline</base-icon>
-        </button>
+        <!-- Взаимодействия (Лайк, коменты) -->
+        <div class="feed-item__tools-left">
+          <!-- Лайк -->
+          <button class="feed-item__tool like" @click="toggleLikeHandle()">
+            <base-icon class="like--liked" v-if="isLiked" key="liked">mdi-heart</base-icon>
+            <base-icon class="like--default" v-else key="default">mdi-heart-outline</base-icon>
+          </button>
 
-        <!-- Лайк -->
-        <button class="feed-item__tool like" @click="toggleLikeHandle()">
-          <base-icon class="like--liked" v-if="isLiked" key="liked">mdi-heart</base-icon>
-          <base-icon class="like--default" v-else key="default">mdi-heart-outline</base-icon>
-        </button>
+          <!-- Коммент -->
+          <button class="feed-item__tool" @click="goPostPage()">
+            <base-icon size="22">mdi-comment-outline</base-icon>
+          </button>
+        </div>
+
+        <!-- Взаимодействия (Поделиться) -->
+        <div class="feed-item__tools-left">
+          <!-- Коммент -->
+          <button class="feed-item__tool share-button" v-if="isCanShare" @click="shareHandle()">
+            <base-icon size="18">mdi-send</base-icon>
+          </button>
+        </div>
+
       </div>
 
       <!-- Колличество лайков -->
       <div class="feed-item__liked-count">Нравится: {{ likesCount }}</div>
+
+      <!-- Когда выложенно -->
+      <div class="feed-item__time">{{ timeAgo }}</div>
 
     </div>
 
@@ -81,6 +92,11 @@ export default {
     innerLikesCount: null,
     // Таймаут для лайка
     likeTimeout: null,
+
+    // Колличество кликов
+    contentClickCount: 0,
+    // Таймаут для контент
+    contentClickTimer: null,
   }),
   props: {
     value: {
@@ -126,9 +142,23 @@ export default {
 
     // Колличество лайков
     likesCount() {
-      console.log("_likesCount", this.innerLikesCount);
       if (this.innerLikesCount === null) return this.value.like_count;
       return this.innerLikesCount;
+    },
+
+    // Показывать ли кнопку поделиться
+    isCanShare() {
+      // return false;
+      return process.client && !!window.navigator.canShare
+    },
+
+    // Кнопка поделиться
+    shareHandle() {
+      window.navigator.share({
+        url: `${window.location.origin}/post/${this.value.code}`,
+        title: `Пост из ток`,
+        text: this.value.text,
+      })
     },
   },
   methods: {
@@ -136,6 +166,28 @@ export default {
       _like: "feed/liking/like",
       _unlike: "feed/liking/unlike",
     }),
+
+    // Клик по контенту
+    contentClickHandle() {
+      this.contentClickCount++;
+      clearTimeout(this.contentClickTimer);
+      this.contentClickTimer = setTimeout(() => {
+        if (this.contentClickCount === 1) this.goPostPage();
+        else if (this.contentClickCount === 2) this.contentLike();
+        this.contentClickCount = 0;
+      }, 300);
+    },
+
+    // Большой лайк
+    contentLike() {
+      this.toggleLikeHandle();
+    },
+
+    // Перейти в страницу поста
+    goPostPage() {
+      this.$router.push(`/post/${this.value.code}`);
+    },
+
     // Перейти в профиль автора
     goAuthorProfile() {
       this.$router.push(`/user/${this.value.author_username}`)
@@ -206,7 +258,7 @@ $avatar-size: 40px;
   }
 
   &__time {
-    margin-top: 10px;
+    margin-top: 4px;
     color: var(--text-color-extra);
     font-size: var(--font-size-mini);
   }
@@ -223,21 +275,30 @@ $avatar-size: 40px;
   }
 
   &__tools {
+    margin-top: 8px;
+    margin-bottom: 4px;
     display: flex;
     flex-direction: row;
-    justify-content: right;
+    justify-content: space-between;
+
+    & > * {
+      display: flex;
+      justify-content: center;
+    }
   }
 
   &__tool {
     color: var(--text-color-primary);
     background: none;
     border: none;
-    padding-left: 8px;
-    padding-right: 0;
+    padding: 0;
+    &:not(:last-child) {
+      padding-right: 12px;
+    }
   }
 
   &__liked-count {
-    text-align: right;
+    text-align: left;
     font-size: var(--font-size-mini);
   }
 }
@@ -259,6 +320,12 @@ $avatar-size: 40px;
       color: var(--text-color-primary);
     }
   }
+}
+
+// Стиль для поделиться
+.share-button {
+  color: var(--color-blue);
+  transform: rotate(340deg);
 }
 
 // Стиль для загрузкчика картинки
