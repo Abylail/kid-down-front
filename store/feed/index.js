@@ -2,6 +2,9 @@ export const state = () => ({
   // Основной список постов
   mainList: [],
 
+  // Страница основной лента
+  mainListPage: 1,
+
   // Свой профильный список постов
   myProfileList: [],
 })
@@ -40,13 +43,15 @@ export const actions = {
   },
 
   // Получить основную ленту (возвращает есть ли еще в пагинации)
-  fetchMainFeed({ commit }, page = 1) {
+  fetchMainFeed({ commit, state }, page = 1) {
     return new Promise(resolve => {
+      if (state.mainListPage > page) return resolve(state.mainList);
       this.$api.$get("/api/v1/feed/main", {params: {page}})
         .then(({err, body}) => {
           if (!err) {
             if (page === 1) commit("set", ["mainList", body]);
             else commit("supplement", ["mainList", body]);
+            commit("set", ["mainListPage", page]);
           }
           resolve(!err && body.length)
         })
