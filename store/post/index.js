@@ -20,7 +20,6 @@ export const actions = {
 
   // Передача информации о посте до перехода
   bridgeInfo({commit, state}, postInfo) {
-    if (state.postInfo && state.postInfo.code === postInfo?.code) return;
     commit("set", ["postInfo", postInfo]);
   }
 }

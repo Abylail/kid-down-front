@@ -157,17 +157,7 @@ export default {
 
     // Показывать ли кнопку поделиться
     isCanShare() {
-      // return false;
       return process.client && !!window.navigator.canShare
-    },
-
-    // Кнопка поделиться
-    shareHandle() {
-      window.navigator.share({
-        url: `${window.location.origin}/post/${this.value.code}`,
-        title: `Пост из ток`,
-        text: this.value.text,
-      })
     },
   },
   methods: {
@@ -224,6 +214,11 @@ export default {
     toggleLikeHandle() {
       if (this.likedSync === null) this.likedSync = !!this.value.my_like;
       this.liked = !this.isLiked;
+
+      // Изменения колличества лайков
+      if (this.liked) this.innerLikesCount = this.likesCount + 1;
+      else this.innerLikesCount = this.likesCount - 1;
+
       clearTimeout(this.likeTimeout);
       this.likeTimeout = setTimeout(() => {
         this.toggleLike();
@@ -237,11 +232,18 @@ export default {
       if (this.liked) this.likedSync = await this._like(this.value.code);
       else this.likedSync = await this._unlike(this.value.code);
 
-      // Изменения колличества лайков
-      if (this.likedSync) this.innerLikesCount = this.likesCount + 1;
-      else this.innerLikesCount = this.likesCount - 1;
+      if (this.liked !== this.likedSync) {
+        this.liked = this.likedSync;
+      }
+    },
 
-      this.liked = this.likedSync;
+    // Кнопка поделиться
+    shareHandle() {
+      window.navigator.share({
+        url: `${window.location.origin}/post/${this.value.code}`,
+        title: `Пост из ток`,
+        text: this.value.text,
+      })
     },
   },
 }
