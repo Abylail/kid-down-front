@@ -1,5 +1,5 @@
 <template>
-  <div class="feed-item">
+  <div class="feed-item" @click="contentClickHandle">
 
     <!-- Аватарка (Левая) -->
     <div class="feed-item__avatar-wrapper">
@@ -7,7 +7,7 @@
         class="feed-item__avatar"
         v-if="avatarUrl"
         :lazy-background="avatarUrl"
-        @click.prevent="goAuthorProfile()"
+        @click.stop="goAuthorProfile()"
       />
     </div>
 
@@ -16,18 +16,18 @@
 
       <!-- Верхняя часть (Имя автора, юзернейм, темв) -->
       <div class="feed-item__head">
-          <div @click.prevent="goAuthorProfile()">
-            <span class="feed-item__name">{{ value.author_name  }}</span>
-            <span class="feed-item__username">@{{ value.author_username  }}</span>
+          <div>
+            <span class="feed-item__name" @click.stop="goAuthorProfile()">{{ value.author_name  }}</span>
+            <span class="feed-item__username" @click.stop="goAuthorProfile()">@{{ value.author_username  }}</span>
           </div>
         <div>
           <!-- Тема (категория) -->
-          <span class="feed-item__category" v-if="value.category_name">{{ value.category_name }}</span>
+          <span class="feed-item__category" v-if="value.category_name" @click.stop>{{ value.category_name }}</span>
         </div>
       </div>
 
       <!-- Контент (текст и фото) -->
-      <div class="feed-item__content" @click="contentClickHandle">
+      <div class="feed-item__content">
         <div class="feed-item_text">{{ value.text }}</div>
         <img
           class="feed-item__picture skeleton"
@@ -67,7 +67,7 @@
       </div>
 
       <!-- Колличество лайков -->
-      <div class="feed-item__liked-count">Нравится: {{ likesCount }}</div>
+      <div class="feed-item__liked-count"><span @click.stop>Нравится: {{ likesCount }}</span></div>
 
       <!-- Когда выложенно -->
       <div class="feed-item__time">{{ timeAgo }}</div>

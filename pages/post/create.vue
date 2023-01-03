@@ -157,7 +157,7 @@ export default {
     this.fetchCategories();
     setTimeout(() => {
       this.$refs.text.$focus();
-    }, 100);
+    }, 400);
   }
 }
 </script>

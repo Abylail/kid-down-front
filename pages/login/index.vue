@@ -63,9 +63,9 @@ export default {
     },
   },
   mounted() {
-    this.$nextTick(() => {
+    setTimeout(() => {
       this.$refs.login.$focus();
-    })
+    }, 400);
   }
 }
 </script>

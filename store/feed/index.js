@@ -25,7 +25,7 @@ export const mutations = {
   // Дополнить список
   supplement(state, [namespace, value]) {
     state[namespace] = [...state[namespace], ...value];
-  }
+  },
 }
 
 export const actions = {
@@ -43,15 +43,14 @@ export const actions = {
   },
 
   // Получить основную ленту (возвращает есть ли еще в пагинации)
-  fetchMainFeed({ commit, state }, page = 1) {
+  fetchMainFeed({ commit, state }) {
     return new Promise(resolve => {
-      if (state.mainListPage > page) return resolve(state.mainList);
-      this.$api.$get("/api/v1/feed/main", {params: {page}})
+      this.$api.$get("/api/v1/feed/main", {params: {page: state.mainListPage}})
         .then(({err, body}) => {
           if (!err) {
-            if (page === 1) commit("set", ["mainList", body]);
+            if (state.mainListPage === 1) commit("set", ["mainList", body]);
             else commit("supplement", ["mainList", body]);
-            commit("set", ["mainListPage", page]);
+            commit("set", ["mainListPage", state.mainListPage+1]);
           }
           resolve(!err && body.length)
         })

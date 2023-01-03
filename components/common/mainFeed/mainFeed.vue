@@ -22,7 +22,6 @@ export default {
   name: "feed",
   components: {List, BaseIcon},
   data: () => ({
-    page: 1,
     isHaveMore: true,
     isLoading: true,
   }),
@@ -40,12 +39,16 @@ export default {
     async fetchMainFeed() {
       if (!this.isHaveMore) return;
       this.isLoading = true;
-      this.isHaveMore = await this._fetchMainFeed(this.page++);
+      this.isHaveMore = await this._fetchMainFeed();
       this.isLoading = false;
     },
   },
   created() {
-    this.fetchMainFeed();
+    if (!this.list.length) this.fetchMainFeed();
+    else {
+      this.isHaveMore = false;
+      this.isLoading = false;
+    }
   },
 }
 </script>
