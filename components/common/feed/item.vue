@@ -45,13 +45,13 @@
         <!-- Взаимодействия (Лайк, коменты) -->
         <div class="feed-item__tools-left">
           <!-- Лайк -->
-          <button class="feed-item__tool like" @click="toggleLikeHandle()">
+          <button class="feed-item__tool like" @click.stop="toggleLikeHandle()">
             <base-icon class="like--liked" v-if="isLiked" key="liked">mdi-heart</base-icon>
             <base-icon class="like--default" v-else key="default">mdi-heart-outline</base-icon>
           </button>
 
           <!-- Коммент -->
-          <button class="feed-item__tool" @click="goPostPage()">
+          <button class="feed-item__tool" @click.stop="goPostPage()">
             <base-icon size="22">mdi-comment-outline</base-icon>
           </button>
         </div>
