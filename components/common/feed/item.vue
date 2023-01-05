@@ -171,9 +171,9 @@ export default {
     contentClickHandle() {
       this.contentClickCount++;
       clearTimeout(this.contentClickTimer);
+      if (this.contentClickCount % 2 === 0) this.contentLike();
       this.contentClickTimer = setTimeout(() => {
         if (this.contentClickCount === 1) this.goPostPage();
-        else if (this.contentClickCount === 2) this.contentLike();
         this.contentClickCount = 0;
       }, 300);
     },
@@ -185,7 +185,7 @@ export default {
 
       setTimeout(() => {
         this.showBigLikeAnimation = false;
-      }, 300);
+      }, 500);
     },
 
     // Передача информации о посте до перехода
