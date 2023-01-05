@@ -67,7 +67,7 @@
       </div>
 
       <!-- Колличество лайков -->
-      <div class="feed-item__liked-count"><span @click.stop>Нравится: {{ likesCount }}</span></div>
+      <div class="feed-item__liked-count"><span @click.stop="goLikes">Нравится: {{ likesCount }}</span></div>
 
       <!-- Когда выложенно -->
       <div class="feed-item__time">{{ timeAgo }}</div>
@@ -180,9 +180,8 @@ export default {
 
     // Большой лайк
     contentLike() {
-      this.toggleLikeHandle();
-      if (this.isLiked) this.showBigLikeAnimation = true;
-      else this.showBigLikeAnimation = false;
+      if (!this.isLiked) this.toggleLikeHandle();
+      this.showBigLikeAnimation = true;
 
       setTimeout(() => {
         this.showBigLikeAnimation = false;
@@ -235,6 +234,13 @@ export default {
       if (this.liked !== this.likedSync) {
         this.liked = this.likedSync;
       }
+    },
+
+    // Перейти к лайкам
+    goLikes() {
+      // Закидываю информацию о посте для перехода на страницу
+      this.bridgeInfo();
+      this.$router.push(`/post/${this.value.code}/likes`);
     },
 
     // Кнопка поделиться

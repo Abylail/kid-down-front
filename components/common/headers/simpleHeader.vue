@@ -1,30 +1,37 @@
 <template>
-  <header class="post-page-header">
-    <div class="post-page-header__left">
+  <header class="simple-header">
+    <div class="simple-header__left">
       <base-icon @click="goBackHandle()">mdi-arrow-left</base-icon>
     </div>
-    <div class="post-page-header__center">
-      <h2 class="post-page-header__title">Пост</h2>
+    <div class="simple-header__center">
+      <h2 class="simple-header__title"><slot/></h2>
     </div>
+    <div class="simple-header__right"></div>
   </header>
 </template>
 
 <script>
 import BaseIcon from "@/components/base/BaseIcon";
 export default {
-  name: "postPageHeader",
+  name: "simpleHeader",
   components: {BaseIcon},
+  props: {
+    backPath: {
+      type: String,
+      default: "/"
+    }
+  },
   methods: {
     // Кнопка назад
     goBackHandle() {
-      this.$goBack("/");
+      this.$goBack(this.backPath);
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.post-page-header {
+.simple-header {
   position: fixed;
   top: 0;
   left: 0;
@@ -55,7 +62,7 @@ export default {
     align-items: center;
     justify-content: center;
     height: 100%;
-    font-size: var(--font-size-title);
+    font-size: var(--font-size-text);
   }
 }
 </style>

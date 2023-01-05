@@ -34,7 +34,7 @@ export const actions = {
       this.$api.$post("/api/v1/auth/login/credentials", {username, password})
         .then(async ({err, body}) => {
           if (!err) {
-            this.$cookies.set("userToken", body.token);
+            this.$cookies.set("userToken", body.token, {maxAge: 3600 * 24 * 30});
             commit("set", ["userInfo", body]);
           }
           resolve(!err);
@@ -49,7 +49,7 @@ export const actions = {
     await this.$api.$post("/api/v1/auth/login/token", {token})
       .then(({err, body}) => {
         if (!err) {
-          this.$cookies.set("userToken", body.token);
+          this.$cookies.set("userToken", body.token, {maxAge: 3600 * 24 * 30});
           commit("set", ["userInfo", body]);
         }
         else {

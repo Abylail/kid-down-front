@@ -14,8 +14,14 @@ export const mutations = {
 
 export const actions = {
   // Запросить пост по коду
-  fetchPostByCode({state, commit}, {post_code}) {
-    if (state.postInfo && state.postInfo.code === post_code) return;
+  async fetchPostByCode({state, commit}, {post_code, optimize = true}) {
+    if (optimize && state.postInfo && state.postInfo.code === post_code) return;
+    await this.$api.$get(`/api/v1/feed/single/${post_code}`)
+      .then(({err, body}) => {
+        if (!err) {
+          commit("set", ["postInfo", body]);
+        }
+      })
   },
 
   // Передача информации о посте до перехода
