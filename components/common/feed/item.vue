@@ -76,7 +76,7 @@
 
     <fade>
       <div class="feed-item__big-like" v-if="showBigLikeAnimation">
-        <base-icon size="40">mdi-heart</base-icon>
+        <base-icon class="feed-item__big-like-heart" size="40">mdi-heart</base-icon>
       </div>
     </fade>
 
@@ -162,8 +162,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      _like: "feed/liking/like",
-      _unlike: "feed/liking/unlike",
+      _like: "post/likes/like",
+      _unlike: "post/likes/unlike",
       _bridgeInfo: "post/bridgeInfo",
     }),
 
@@ -350,6 +350,11 @@ $avatar-size: 40px;
     justify-content: center;
     background: var(--background-transparent);
   }
+
+  &__big-like-heart {
+    animation: animateHeart 1.2s;
+    animation-delay: .1s;
+  }
 }
 
 // Стиль для лайка
@@ -388,4 +393,26 @@ $avatar-size: 40px;
     background-position-x: -200%;
   }
 }
+
+@keyframes animateHeart {
+  0% {
+    transform: scale(0.8);
+  }
+  5% {
+    transform: scale(0.9);
+  }
+  10% {
+    transform: scale(0.8);
+  }
+  15% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(0.8);
+  }
+}
+
 </style>

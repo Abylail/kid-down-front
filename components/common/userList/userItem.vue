@@ -1,21 +1,22 @@
 <template>
-  <div class="account-item" @click="goAccount">
-    <div class="account-item__avatar" :style="avatarStyle"></div>
-    <div class="account-item__info">
-      <div class="account-item__name">{{ value.name || value.username }}</div>
-      <div class="account-item__username">@{{ value.username }}</div>
+  <div class="user-item">
+    <div class="user-item__avatar" :style="avatarStyle"></div>
+    <div class="user-item__info">
+      <div class="user-item__name">{{ value.name || value.username }}</div>
+      <div class="user-item__username">@{{ value.username }}</div>
     </div>
-    <div class="account-item__subscribe">
+    <div class="user-item__subscribe">
       <base-button v-if="selfUsername !== value.username" size="mini" :type="subscribeType" min-content @click.stop="subscribeToggleHandle()">{{ subscribeTitle }}</base-button>
     </div>
   </div>
 </template>
 
 <script>
+import {mapGetters} from "vuex";
 import BaseButton from "@/components/base/BaseButton";
-import {mapActions, mapGetters} from "vuex";
+
 export default {
-  name: "accountItem",
+  name: "userItem",
   components: {BaseButton},
   props: {
     value: {
@@ -27,11 +28,13 @@ export default {
       isAuth: "user/isAuth",
       selfUsername: "user/getUsername",
     }),
+
     // Уже подписан
     isSubscribed() {
       if (!this.isAuth) return false;
       return this.value.subscribed;
     },
+
     // Текст кнопки подписки
     subscribeTitle() {
       if (this.isSubscribed) return "Вы подписаны";
@@ -42,6 +45,8 @@ export default {
       if (this.isSubscribed) return "default";
       return "primary"
     },
+
+    // Стиль аватарки (фото)
     avatarStyle() {
       if (this.value.avatar) return {backgroundImage: `url(${process.env.CDN_URL}${this.value.avatar})`}
       return {};
@@ -55,8 +60,12 @@ export default {
 
     // Подписаться/отписаться кнопка
     subscribeToggleHandle() {
-      if (this.isAuth) this.$emit("subscribeToggle");
-      else this.$goLogin();
+      if (this.isAuth) this.subscribeToggle();
+    },
+
+    // Подписаться/отписаться
+    subscribeToggle() {
+
     },
   }
 }
@@ -64,7 +73,7 @@ export default {
 
 <style lang="scss" scoped>
 $height: 35px;
-.account-item {
+.user-item {
   padding: 12px;
   display: grid;
   grid-template-columns: $height 1fr 120px;

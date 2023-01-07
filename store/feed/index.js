@@ -1,17 +1,9 @@
 export const state = () => ({
-  // Основной список постов
-  mainList: [],
-
-  // Страница основной лента
-  mainListPage: 1,
-
   // Свой профильный список постов
   myProfileList: [],
 })
 
 export const getters = {
-  // Список постов
-  getMainList: state => state.mainList,
 
   // Свой профильный список постов
   getMyProfileList: state => state.myProfileList,
@@ -40,21 +32,6 @@ export const actions = {
           console.log(body);
         }
       })
-  },
-
-  // Получить основную ленту (возвращает есть ли еще в пагинации)
-  fetchMainFeed({ commit, state }) {
-    return new Promise(resolve => {
-      this.$api.$get("/api/v1/feed/main", {params: {page: state.mainListPage}})
-        .then(({err, body}) => {
-          if (!err) {
-            if (state.mainListPage === 1) commit("set", ["mainList", body]);
-            else commit("supplement", ["mainList", body]);
-            commit("set", ["mainListPage", state.mainListPage+1]);
-          }
-          resolve(!err && body.length)
-        })
-    })
   },
 
   // Получить лист по username
@@ -88,4 +65,15 @@ export const actions = {
         })
     })
   },
+
+  // Поиск категорий (возвращает список)
+  fetchCategories({}, searchQuery = null) {
+    return new Promise(resolve => {
+      this.$api.$post("/api/v1/search/category", {query: searchQuery})
+        .then(({err, body}) => {
+          if (!err) resolve(body);
+          else resolve([]);
+        })
+    })
+  }
 }

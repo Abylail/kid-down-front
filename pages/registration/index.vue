@@ -20,6 +20,7 @@ import {mapActions} from "vuex";
 export default {
   name: "index",
   components: {BaseIcon, BaseButton, BaseInput},
+  middleware: "antiAuth",
   data: () => ({
     // Форма для регсистрации
     form: {

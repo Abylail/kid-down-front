@@ -112,7 +112,7 @@ export default {
   methods: {
     ...mapActions({
       _createPost: "feed/createPost",
-      _fetchCategories: "feed/categories/fetchCategories",
+      _fetchCategories: "feed/fetchCategories",
     }),
 
     // Получить список категорий

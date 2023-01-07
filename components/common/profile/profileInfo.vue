@@ -128,7 +128,7 @@ export default {
     // Подписаться/отписаться
     subscribeToggleHandle() {
       if (this.isAuth) this.$emit("subscribeToggle");
-      else this.$router.push(`/login?redirect=${this.$route.fullPath}`);
+      else this.$goLogin();
     },
   }
 }

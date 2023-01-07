@@ -22,24 +22,24 @@ export default {
   name: "feed",
   components: {List, BaseIcon},
   data: () => ({
-    isHaveMore: true,
     isLoading: true,
   }),
   computed: {
     ...mapGetters({
-      list: "feed/getMainList",
+      list: "feed/main/getMainList",
+      isHaveMore: "feed/main/isHaveMore",
     }),
   },
   methods: {
     ...mapActions({
-      _fetchMainFeed: "feed/fetchMainFeed",
+      _fetchMainFeed: "feed/main/fetchMainFeed",
     }),
 
     // Получить ленту
     async fetchMainFeed() {
       if (!this.isHaveMore) return;
       this.isLoading = true;
-      this.isHaveMore = await this._fetchMainFeed();
+      await this._fetchMainFeed();
       this.isLoading = false;
     },
   },
