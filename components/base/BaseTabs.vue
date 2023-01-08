@@ -1,5 +1,5 @@
 <template>
-  <div class="base-tabs">
+  <div class="base-tabs" :class="{'base-tabs--background': background}">
     <div class="base-tabs__list">
       <div
         class="base-tabs__item"
@@ -21,6 +21,10 @@ export default {
     tabs: {
       type: Array,
       default: () => [{id: "posts", name: "Посты"}]
+    },
+    background: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
@@ -35,7 +39,10 @@ export default {
 <style lang="scss" scoped>
 $side-padding-size: 20px;
 .base-tabs {
-  margin-top: 10px;
+
+  &--background {
+    background: var(--background-color-primary);
+  }
 
   &__list {
     display: flex;

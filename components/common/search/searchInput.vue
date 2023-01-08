@@ -5,6 +5,7 @@
       placeholder="Поиск"
       :value="searchText"
       ref="input"
+      @keyup.enter="blurInput()"
       @input="inputHandle($event.target.value)"
     />
     <div class="search-input__icon-wrapper">
@@ -33,7 +34,6 @@ export default {
   },
   watch: {
     "$route.query.searchType"() {
-      this.focusInput();
       this.search();
     }
   },
@@ -70,6 +70,11 @@ export default {
         this.$refs.input.focus();
       });
     },
+
+    // Разфокусироваться от инпута
+    blurInput() {
+      this.$refs.input.blur();
+    }
   },
   created() {
     this.searchText = this.$route.query.searchText;

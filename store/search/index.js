@@ -24,7 +24,7 @@ export const state = () => ({
   activeSearchType: "all",
 
   // Загружается ли лента
-  isLoading: false,
+  isLoading: true,
 
   // Список
   resultListAll: [],
@@ -65,7 +65,6 @@ export const actions = {
   async searchUniversal({ dispatch, state, commit, getters }, {searchType = state.activeSearchType, searchText = getters.getLastSearchText}) {
     commit("set", ["isLoading", true]);
     commit("set", ["activeSearchType", searchType]);
-    console.log("searchType", searchType);
     if (searchTypesEnum.all === searchType) await dispatch("searchAll", {searchText});
     else if (searchTypesEnum.users === searchType) await dispatch("searchUsers", {searchText});
     else if (searchTypesEnum.categories === searchType) await dispatch("searchCategories", {searchText});

@@ -9,10 +9,11 @@
         {id: 'users', name: 'Пользователи'},
         {id: 'categories', name: 'Темы'},
        ]"
+      background
     />
 
     <!-- Список результатов -->
-    <div class="search-page__list">
+    <div class="search-page__list" v-show="!isLoading">
       <search-item
         class="search-page__item"
         v-for="(item, index) in resultList" :key="index"
@@ -23,7 +24,8 @@
     </div>
 
     <!-- Загрузка -->
-<!--    <base-loader class="search-page__loading" size="30" color-reverse/>-->
+    <search-loader class="search-page__loading" :search-type="searchType" v-show="isLoading"/>
+
   </div>
 </template>
 
@@ -34,10 +36,11 @@ import {mapActions, mapGetters} from "vuex";
 import BaseLoader from "@/components/base/BaseLoader";
 import SearchItem from "@/components/common/search/searchItem";
 import {searchTypesEnum} from "@/store/search";
+import SearchLoader from "@/components/common/search/searchLoader";
 
 export default {
   name: "index",
-  components: {SearchItem, BaseLoader, BaseTabs, SearchHeader},
+  components: {SearchLoader, SearchItem, BaseLoader, BaseTabs, SearchHeader},
   data: () => ({
     searchTypesEnum,
   }),
@@ -79,11 +82,6 @@ export default {
     position: fixed;
     top: var(--header-height);
     width: 100%;
-  }
-
-  &__loading {
-    display: block;
-    margin: 30px auto 0;
   }
 }
 </style>
