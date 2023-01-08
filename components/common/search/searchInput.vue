@@ -18,36 +18,65 @@
 
 <script>
 import BaseIcon from "@/components/base/BaseIcon";
+import {mapActions, mapGetters} from "vuex";
 export default {
   name: "searchInput",
   components: {BaseIcon},
   data: () => ({
     searchText: null,
+    searchTimeout: null,
   }),
+  computed: {
+    ...mapGetters({
+      lastSearchText: "search/getLastSearchText",
+    }),
+  },
+  watch: {
+    "$route.query.searchType"() {
+      this.focusInput();
+      this.search();
+    }
+  },
   methods: {
+    ...mapActions({
+      _search: "search/searchUniversal",
+    }),
 
     // Кнопка очистить
     clearHandle() {
       this.searchText = null;
-      this.$refs.input.focus();
+      clearTimeout(this.searchTimeout);
+      this.search();
+      this.focusInput();
     },
 
     // Ввод текста
     inputHandle(value) {
       this.searchText = value;
+      clearTimeout(this.searchTimeout);
+      this.searchTimeout = setTimeout(() => {this.search()}, 500)
+    },
+
+    // Поиск
+    search() {
+      this._search({searchText: this.searchText, searchType: this.$route.query.searchType || "all"});
+      this.$router.replace({query: {...this.$route.query, searchText: this.searchText}})
     },
 
     // Сфокусироваться на инпуте (если не было поисков)
     focusInput() {
-      if (!Object.keys(this.$route.query).length) {
-        setTimeout(() => {
-          this.$refs.input.focus();
-        }, 500);
-      }
+      this.$nextTick(() => {
+        if (!this.$refs.input.autofocus) this.$refs.input.setAttribute("autofocus", "autofocus");
+        this.$refs.input.focus();
+      });
     },
   },
+  created() {
+    this.searchText = this.$route.query.searchText;
+  },
   mounted() {
-    this.focusInput();
+    this.$nextTick(() => {this.searchText = this.lastSearchText;});
+    if (!Object.keys(this.$route.query).length) this.focusInput();
   }
 }
 </script>

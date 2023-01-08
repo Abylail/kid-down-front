@@ -46,7 +46,7 @@ export default {
     value: {
       handler(val) {
         // Установка линии пагиниции
-        if (!val.length) return;
+        if (!val.length || val.length < 5) return;
         this.$nextTick(() => {
           const pointCount = val.length - 3;
           this.paginatePoint = this.$el.children[pointCount].offsetTop;

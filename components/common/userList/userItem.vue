@@ -1,5 +1,5 @@
 <template>
-  <div class="user-item">
+  <div class="user-item" @click="goAccount()">
     <div class="user-item__avatar" :style="avatarStyle"></div>
     <div class="user-item__info">
       <div class="user-item__name">{{ value.name || value.username }}</div>
