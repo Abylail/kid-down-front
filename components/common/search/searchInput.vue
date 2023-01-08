@@ -4,6 +4,7 @@
       class="search-input__input"
       placeholder="Поиск"
       :value="searchText"
+      ref="input"
       @input="inputHandle($event.target.value)"
     />
     <div class="search-input__icon-wrapper">
@@ -28,13 +29,26 @@ export default {
     // Кнопка очистить
     clearHandle() {
       this.searchText = null;
+      this.$refs.input.focus();
     },
 
     // Ввод текста
     inputHandle(value) {
       this.searchText = value;
     },
+
+    // Сфокусироваться на инпуте (если не было поисков)
+    focusInput() {
+      if (!Object.keys(this.$route.query).length) {
+        setTimeout(() => {
+          this.$refs.input.focus();
+        }, 500);
+      }
+    },
   },
+  mounted() {
+    this.focusInput();
+  }
 }
 </script>
 
