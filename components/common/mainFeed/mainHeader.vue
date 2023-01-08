@@ -3,14 +3,22 @@
 
     <!-- LEFT -->
     <div class="main-header__left">
-      TOK
+      TOXY
     </div>
 
     <!-- RIGHT -->
     <div class="main-header__right">
-      <div class="main-header__avatar" v-if="isAuth && userInfo.avatar" :style="{backgroundImage: `url(${avatarUrl})`}" @click="goProfile()"></div>
-      <base-icon size="30" v-else-if="isAuth && userInfo.avatar" @click="goProfile()">mdi-account-circle</base-icon>
-      <base-icon size="20" v-else @click="goProfile()">mdi-account-circle</base-icon>
+
+      <!-- Поиск (переход) -->
+      <div class="main-header__search-wrapper">
+        <base-icon size="27" @click="goSearch()">mdi-text-search-variant</base-icon>
+      </div>
+
+      <!-- Аватарка -->
+      <div class="main-header__avatar-wrapper">
+        <div class="main-header__avatar" v-if="isAuth && userInfo.avatar" :style="{backgroundImage: `url(${avatarUrl})`}" @click="goProfile()"></div>
+        <base-icon size="20" v-else @click="goProfile()">mdi-account-circle</base-icon>
+      </div>
     </div>
   </header>
 </template>
@@ -37,8 +45,13 @@ export default {
     // Перейти в профиль
     goProfile() {
       this.$goLogin("/user");
+    },
+
+    // Перейти в поиск
+    goSearch() {
+      this.$router.push("/search");
     }
-  }
+  },
 }
 </script>
 
@@ -75,6 +88,10 @@ $side-padding-size: 16px;
     background-size: cover;
     background-position: center;
     border-radius: 30px;
+  }
+
+  &__search-wrapper {
+    margin-right: 10px;
   }
 }
 </style>

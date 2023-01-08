@@ -45,10 +45,6 @@ export default {
   },
   created() {
     if (!this.list.length) this.fetchMainFeed();
-    else {
-      this.isHaveMore = false;
-      this.isLoading = false;
-    }
   },
 }
 </script>

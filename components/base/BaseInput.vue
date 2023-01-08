@@ -41,7 +41,7 @@ export default {
     noBorder: { // Скрыть border
       type: Boolean,
       default: false
-    }
+    },
   },
   data: () => ({
     // Инпут активен

@@ -7,8 +7,10 @@ const goBack = ({router, context}, extraPath) => {
 }
 
 // Перейти на страницу логина, так что бы при логине кинуло обратно
-const goLogin = ({ router, context }, extraPath) => {
-  router.push(`/login?redirect=${extraPath || context.route.fullPath || "/"}`);
+// path -> ссылка куда надо перейти если пользовьтель авторизовался
+const goLogin = ({ router, context, store }, path) => {
+  if (store.getters["user/isAuth"]) router.push(path || "/");
+  else router.push(`/login?redirect=${path || context.route.fullPath || "/"}`);
 }
 
 export default function ({app}, inject) {
