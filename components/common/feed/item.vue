@@ -59,8 +59,8 @@
         <!-- Взаимодействия (Поделиться) -->
         <div class="feed-item__tools-left">
           <!-- Коммент -->
-          <button class="feed-item__tool share-button" v-if="isCanShare" @click="shareHandle()">
-            <base-icon size="18">mdi-send</base-icon>
+          <button class="feed-item__tool share-button" v-if="isCanShare" @click.stop="shareHandle()">
+            <base-icon size="18">mdi-share</base-icon>
           </button>
         </div>
 
@@ -155,9 +155,18 @@ export default {
       return this.innerLikesCount;
     },
 
+    // Данные для поделиться
+    shareData() {
+      return {
+        title: `${this.value.author_name} ${this.value.author_username}`,
+        text: this.value.text,
+        url: `${window.location.origin}/post/${this.value.code}`
+      }
+    },
+
     // Показывать ли кнопку поделиться
     isCanShare() {
-      return process.client && !!window.navigator.canShare
+      return true;
     },
   },
   methods: {
@@ -245,11 +254,7 @@ export default {
 
     // Кнопка поделиться
     shareHandle() {
-      window.navigator.share({
-        url: `${window.location.origin}/post/${this.value.code}`,
-        title: `Пост из ток`,
-        text: this.value.text,
-      })
+      this.$toast("Ждем https сертификат");
     },
   },
 }
@@ -378,8 +383,8 @@ $avatar-size: 40px;
 
 // Стиль для поделиться
 .share-button {
-  color: var(--color-blue);
-  transform: rotate(340deg);
+  //color: var(--color-blue);
+  //transform: rotate(340deg);
 }
 
 // Стиль для загрузкчика картинки

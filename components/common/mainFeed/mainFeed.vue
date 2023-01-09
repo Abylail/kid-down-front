@@ -45,6 +45,7 @@ export default {
   },
   created() {
     if (!this.list.length) this.fetchMainFeed();
+    else this.isLoading = false;
   },
 }
 </script>

@@ -73,6 +73,7 @@ export default {
   &__image {
     display: block;
     max-width: 100%;
+    max-height: 60vh;
   }
 
   &__actions {
