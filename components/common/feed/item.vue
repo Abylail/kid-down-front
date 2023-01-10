@@ -166,7 +166,7 @@ export default {
 
     // Показывать ли кнопку поделиться
     isCanShare() {
-      return !!window.navigator.canShare;
+      return process.client && !!window.navigator.canShare;
     },
   },
   methods: {
