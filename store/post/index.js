@@ -16,7 +16,7 @@ export const actions = {
   // Запросить пост по коду
   async fetchPostByCode({state, commit}, {post_code, optimize = true}) {
     if (optimize && state.postInfo && state.postInfo.code === post_code) return;
-    await this.$api.$get(`/api/v1/feed/single/${post_code}`)
+    await this.$api.$get(`/api/feed/single/${post_code}`)
       .then(({err, body}) => {
         if (!err) {
           commit("set", ["postInfo", body]);

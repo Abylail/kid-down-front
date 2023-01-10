@@ -3,7 +3,7 @@ export const actions = {
   // Получить список подписок
   fetchFollowing({}, username) {
     return new Promise(resolve => {
-      this.$api.$get(`/api/v1/user/subscriptions/${username}`)
+      this.$api.$get(`/api/user/subscriptions/${username}`)
         .then(({err, body}) => {
           if (!err) resolve(body);
           else resolve([]);
@@ -14,7 +14,7 @@ export const actions = {
   // Получить список подписчиков
   fetchFollowers({}, username) {
     return new Promise(resolve => {
-      this.$api.$get(`/api/v1/user/subscribers/${username}`)
+      this.$api.$get(`/api/user/subscribers/${username}`)
         .then(({err, body}) => {
           if (!err) resolve(body);
           else resolve([]);

@@ -26,7 +26,7 @@ export const actions = {
   async createPost({}, {text, picture, custom_category, category_code}) {
     let myPicture = picture && {...picture};
     if (myPicture) myPicture.buffer = myPicture.buffer.split(",")[1];
-    await this.$api.$post("/api/v1/post/add", {text, picture: myPicture, custom_category, category_code})
+    await this.$api.$post("/api/post/add", {text, picture: myPicture, custom_category, category_code})
       .then(({err, body}) => {
         if (!err) {
           console.log(body);
@@ -44,7 +44,7 @@ export const actions = {
   fetchMyProfileFeed({ state, commit, rootGetters }) {
     return new Promise(resolve => {
       if (state.myProfileList.length) resolve(state.myProfileList);
-      else this.$api.$get(`/api/v1/feed/user/${rootGetters["user/getUsername"]}`)
+      else this.$api.$get(`/api/feed/user/${rootGetters["user/getUsername"]}`)
         .then(({err, body}) => {
           if (!err) {
             commit("set", ["myProfileList", body]);
@@ -58,7 +58,7 @@ export const actions = {
   // Получить ленту другого профиля
   fetchOthersProfileFeed({}, username) {
     return new Promise(resolve => {
-      this.$api.$get(`/api/v1/feed/user/${username}`)
+      this.$api.$get(`/api/feed/user/${username}`)
         .then(({body, err}) => {
           if (!err) resolve(body);
           else resolve([]);
@@ -69,7 +69,7 @@ export const actions = {
   // Поиск категорий (возвращает список)
   fetchCategories({}, searchQuery = null) {
     return new Promise(resolve => {
-      this.$api.$post("/api/v1/search/category", {query: searchQuery})
+      this.$api.$post("/api/search/category", {query: searchQuery})
         .then(({err, body}) => {
           if (!err) resolve(body);
           else resolve([]);

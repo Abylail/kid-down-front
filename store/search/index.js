@@ -76,7 +76,7 @@ export const actions = {
     if (searchText && searchText === state.lastSearchTextAll) return;
     commit("set", ["lastSearchTextAll", searchText]);
     if (!searchText) return commit("set", ["resultListAll", []]);
-    await this.$api.$post("/api/v1/search/smart", {query: searchText})
+    await this.$api.$post("/api/search/smart", {query: searchText})
       .then(({err, body}) => {
         if (!err) {
           commit("set", ["resultListAll", body]);
@@ -89,7 +89,7 @@ export const actions = {
     if (searchText && searchText === state.lastSearchTextUsers) return;
     commit("set", ["lastSearchTextUsers", searchText]);
     if (!searchText) return commit("set", ["resultListUsers", []]);
-    await this.$api.$post("/api/v1/search/user", {query: searchText})
+    await this.$api.$post("/api/search/user", {query: searchText})
       .then(({err, body}) => {
         if (!err) {
           commit("set", ["resultListUsers", body]);
@@ -102,7 +102,7 @@ export const actions = {
     if (searchText && searchText === state.lastSearchTextCategories) return;
     commit("set", ["lastSearchTextCategories", searchText]);
     if (!searchText) return commit("set", ["resultListCategories", []]);
-    await this.$api.$post("/api/v1/search/category", {query: searchText})
+    await this.$api.$post("/api/search/category", {query: searchText})
       .then(({err, body}) => {
         if (!err) {
           commit("set", ["resultListCategories", body]);

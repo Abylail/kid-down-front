@@ -31,7 +31,7 @@ export const actions = {
   // Войти через логин и пароль
   login({ commit, dispatch }, {username, password}) {
     return new Promise(resolve => {
-      this.$api.$post("/api/v1/auth/login/credentials", {username, password})
+      this.$api.$post("/api/auth/login/credentials", {username, password})
         .then(async ({err, body}) => {
           if (!err) {
             this.$cookies.set("userToken", body.token, {maxAge: 3600 * 24 * 30});
@@ -46,7 +46,7 @@ export const actions = {
   async tokenAuth({ commit, state, getters, dispatch }, outerToken = state.userInfo?.token) {
     let token = outerToken || this.$cookies.get("userToken");
     if (!token) return;
-    await this.$api.$post("/api/v1/auth/login/token", {token})
+    await this.$api.$post("/api/auth/login/token", {token})
       .then(({err, body}) => {
         if (!err) {
           this.$cookies.set("userToken", body.token, {maxAge: 3600 * 24 * 30});
@@ -61,7 +61,7 @@ export const actions = {
   // Регистрация
   registration({ commit, dispatch }, {username, password, re_password}) {
     return new Promise(resolve => {
-      this.$api.$post("/api/v1/auth/signup", {username, password, re_password})
+      this.$api.$post("/api/auth/signup", {username, password, re_password})
         .then(async ({err, body}) => {
           if (!err) {
             await dispatch("tokenAuth", body);
@@ -80,7 +80,7 @@ export const actions = {
   // Сохранения информации профиля (имя + описание)
   saveProfileInfo({ commit }, {name, bio}) {
     return new Promise(resolve => {
-      this.$api.$post("/api/v1/profile/update", {name, bio})
+      this.$api.$post("/api/profile/update", {name, bio})
         .then(({err, body}) => {
           if (!err) {
             commit("mergeObject", ["userInfo", {name, bio}])
@@ -93,7 +93,7 @@ export const actions = {
   // Сохранить аватара
   saveProfileAvatar({ commit, getters }, {name, buffer}) {
     return new Promise(resolve => {
-      this.$api.$post("/api/v1/profile/avatar", {name, buffer})
+      this.$api.$post("/api/profile/avatar", {name, buffer})
         .then(({err, body}) => {
           if (!err) {
             commit("mergeObject", ["userInfo", {avatar: body}]);
@@ -106,7 +106,7 @@ export const actions = {
   // Сохранить обои
   saveProfileWallpaper({ commit, getters }, {name, buffer}) {
     return new Promise(resolve => {
-      this.$api.$post("/api/v1/profile/wallpaper", {name, buffer})
+      this.$api.$post("/api/profile/wallpaper", {name, buffer})
         .then(({err, body}) => {
           if (!err) {
             commit("mergeObject", ["userInfo", {wallpaper: body}]);
@@ -119,7 +119,7 @@ export const actions = {
   // Подписаться -> значение подписан или нет
   subscribe({}, username) {
     return new Promise(resolve => {
-      this.$api.$post("/api/v1/profile/subscribe", {username})
+      this.$api.$post("/api/profile/subscribe", {username})
         .then(({err}) => {
           if (err) resolve(false);
           else resolve(true);
@@ -130,7 +130,7 @@ export const actions = {
   // Отписаться -> значение подписан или нет
   unsubscribe({}, username) {
     return new Promise(resolve => {
-      this.$api.$post("/api/v1/profile/unsubscribe", {username})
+      this.$api.$post("/api/profile/unsubscribe", {username})
         .then(({err}) => {
           if (err) resolve(true);
           else resolve(false);

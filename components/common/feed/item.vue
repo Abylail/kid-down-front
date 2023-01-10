@@ -254,7 +254,8 @@ export default {
 
     // Кнопка поделиться
     shareHandle() {
-      this.$toast("Ждем https сертификат");
+      if (!window.navigator.canShare) this.$toast("Ждем https сертификат");
+      else this.$toast.success("Ура скоро можно будет отправлять посты");
     },
   },
 }

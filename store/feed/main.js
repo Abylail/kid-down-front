@@ -32,7 +32,7 @@ export const actions = {
 
   // Получить основную ленту (возвращает есть ли еще в пагинации)
   async fetchMainFeed({ commit, state }) {
-      await this.$api.$get("/api/v1/feed/main", {params: {page: state.mainListPage}})
+      await this.$api.$get("/api/feed/main", {params: {page: state.mainListPage}})
         .then(({err, body}) => {
           if (!err) {
             if (state.mainListPage === 1) commit("set", ["mainList", body]);
