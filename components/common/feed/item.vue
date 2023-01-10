@@ -158,7 +158,7 @@ export default {
     // Данные для поделиться
     shareData() {
       return {
-        title: `${this.value.author_name} ${this.value.author_username}`,
+        title: `${this.value.author_name} ${this.value.author_username} - TOXY`,
         text: this.value.text,
         url: `${window.location.origin}/post/${this.value.code}`
       }
@@ -166,7 +166,7 @@ export default {
 
     // Показывать ли кнопку поделиться
     isCanShare() {
-      return true;
+      return !!window.navigator.canShare;
     },
   },
   methods: {
@@ -254,8 +254,9 @@ export default {
 
     // Кнопка поделиться
     shareHandle() {
-      if (!window.navigator.canShare) this.$toast("Ждем https сертификат");
-      else this.$toast.success("Ура скоро можно будет отправлять посты");
+      if (window.navigator?.canShare(this.shareData)) {
+        window.navigator.share(this.shareData);
+      }
     },
   },
 }
