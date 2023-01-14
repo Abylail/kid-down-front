@@ -27,7 +27,7 @@ export default {
   name: "searchLoader",
   props: {
     searchType: {
-      type: Boolean,
+      type: String,
       default: "all"
     }
   },

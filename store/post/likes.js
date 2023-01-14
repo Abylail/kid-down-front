@@ -37,9 +37,9 @@ export const actions = {
   },
 
   // Лайкнуть пост (возвращает то что сохранилось в базе)
-  like({}, post_code) {
+  like({}, {post_code, post_category}) {
     return new Promise(resolve => {
-      this.$api.$post("/api/post/like/do", {post_code})
+      this.$api.$post("/api/post/like/do", {post_code, post_category})
         .then(({err}) => {
           if (err) resolve(false);
           else resolve(true);
@@ -48,9 +48,9 @@ export const actions = {
   },
 
   // Лайкнуть пост (возвращает то что сохранилось в базе)
-  unlike({}, post_code) {
+  unlike({}, {post_code, post_category}) {
     return new Promise(resolve => {
-      this.$api.$post("/api/post/like/undo", {post_code})
+      this.$api.$post("/api/post/like/undo", {post_code, post_category})
         .then(({err}) => {
           if (err) resolve(true);
           else resolve(false);

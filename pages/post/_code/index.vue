@@ -5,6 +5,7 @@
     <div class="post-page__post" v-else>
       <item :value="postInfo"/>
     </div>
+    <comment-list :post-code="postCode"/>
   </div>
 </template>
 
@@ -13,9 +14,10 @@ import {mapActions, mapGetters} from "vuex";
 import Item from "@/components/common/feed/item";
 import ItemSkeleton from "@/components/common/feed/itemSkeleton";
 import SimpleHeader from "@/components/common/headers/simpleHeader";
+import CommentList from "@/components/common/postPage/commentList";
 export default {
   name: "index",
-  components: {SimpleHeader, ItemSkeleton, Item},
+  components: {CommentList, SimpleHeader, ItemSkeleton, Item},
   computed: {
     ...mapGetters({
       postInfo: "post/getPostInfo",

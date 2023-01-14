@@ -13,5 +13,7 @@ export default {
 <style lang="scss" scoped>
 .default-layout {
   min-height: 100vh;
+  max-width: 700px;
+  margin: 0 auto;
 }
 </style>

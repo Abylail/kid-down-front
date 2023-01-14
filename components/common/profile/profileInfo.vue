@@ -137,6 +137,7 @@ export default {
 <style lang="scss" scoped>
 $side-padding-size: 20px;
 .profile-info {
+  min-height: 220px;
 
   &__wallpaper {
     position: relative;

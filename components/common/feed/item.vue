@@ -1,28 +1,27 @@
 <template>
   <div class="feed-item" @click="contentClickHandle">
 
-    <!-- Аватарка (Левая) -->
-    <div class="feed-item__avatar-wrapper">
-      <div
-        class="feed-item__avatar"
-        v-if="avatarUrl"
-        :lazy-background="avatarUrl"
-        @click.stop="goAuthorProfile()"
-      />
-    </div>
-
-    <!-- Основное (правая) -->
-    <div class="feed-item__main">
-
-      <!-- Верхняя часть (Имя автора, юзернейм, темв) -->
+      <!-- Верхняя часть (Аватарка, Имя автора, юзернейм, темв) -->
       <div class="feed-item__head">
-          <div>
-            <span class="feed-item__name" @click.stop="goAuthorProfile()">{{ value.author_name  }}</span>
-            <span class="feed-item__username" @click.stop="goAuthorProfile()">@{{ value.author_username  }}</span>
+        <div
+          class="feed-item__avatar"
+          v-if="avatarUrl"
+          :lazy-background="avatarUrl"
+          @click.stop="goAuthorProfile()"
+        />
+
+        <!-- Информация -->
+          <div class="feed-item__head-info">
+
+          <!-- Имя -->
+            <div class="feed-item__name-wrapper">
+              <span class="feed-item__name" @click.stop="goAuthorProfile()">{{ value.author_name  }}</span>
+              <span class="feed-item__username" @click.stop="goAuthorProfile()">@{{ value.author_username  }}</span>
+            </div>
+            <!-- Тема (категория) -->
+            <div class="feed-item__category" v-if="value.category_name" @click.stop>{{ value.category_name }}</div>
           </div>
         <div>
-          <!-- Тема (категория) -->
-          <span class="feed-item__category" v-if="value.category_name" @click.stop>{{ value.category_name }}</span>
         </div>
       </div>
 
@@ -54,13 +53,18 @@
           <button class="feed-item__tool" @click.stop="goPostPage()">
             <base-icon size="22">mdi-comment-outline</base-icon>
           </button>
+
+          <!-- Отправить -->
+          <button class="feed-item__tool share-button" v-if="isCanShare" @click.stop="sendHandle()">
+            <base-icon size="22">mdi-send-outline</base-icon>
+          </button>
         </div>
 
         <!-- Взаимодействия (Поделиться) -->
         <div class="feed-item__tools-left">
-          <!-- Коммент -->
+          <!-- Поделиться -->
           <button class="feed-item__tool share-button" v-if="isCanShare" @click.stop="shareHandle()">
-            <base-icon size="18">mdi-share</base-icon>
+            <base-icon size="22">mdi-share</base-icon>
           </button>
         </div>
 
@@ -71,8 +75,6 @@
 
       <!-- Когда выложенно -->
       <div class="feed-item__time">{{ timeAgo }}</div>
-
-    </div>
 
     <fade>
       <div class="feed-item__big-like" v-if="showBigLikeAnimation">
@@ -166,7 +168,7 @@ export default {
 
     // Показывать ли кнопку поделиться
     isCanShare() {
-      return process.client && !!window.navigator.canShare;
+      return process.env.NODE_ENV === "development" || process.client && !!window.navigator.canShare;
     },
   },
   methods: {
@@ -237,8 +239,8 @@ export default {
     async toggleLike() {
       if (this.likedSync === this.liked) return;
 
-      if (this.liked) this.likedSync = await this._like(this.value.code);
-      else this.likedSync = await this._unlike(this.value.code);
+      if (this.liked) this.likedSync = await this._like({post_code: this.value.code, post_category: this.value.category_code});
+      else this.likedSync = await this._unlike({post_code: this.value.code, post_category: this.value.category_code});
 
       if (this.liked !== this.likedSync) {
         this.liked = this.likedSync;
@@ -258,6 +260,13 @@ export default {
         window.navigator.share(this.shareData);
       }
     },
+
+    // Кнопка отправить
+    sendHandle() {
+      if (window.navigator?.canShare(this.shareData)) {
+        window.navigator.share(this.shareData);
+      }
+    },
   },
 }
 </script>
@@ -266,7 +275,6 @@ export default {
 $avatar-size: 40px;
 .feed-item {
   position: relative;
-  display: flex;
   padding: 15px;
   border-top: 1px solid var(--background-color-secondary);
 
@@ -281,6 +289,16 @@ $avatar-size: 40px;
 
   &__main {
     width: 100%;
+  }
+
+  &__head {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__head-info {
+    display: flex;
+    flex-direction: column;
   }
 
   &__name {
@@ -309,7 +327,7 @@ $avatar-size: 40px;
   &__picture {
     display: block;
     object-fit: cover;
-    margin-top: 5px;
+    margin-top: 10px;
     max-width: 100%;
     width: 100%;
     border-radius: 5px;

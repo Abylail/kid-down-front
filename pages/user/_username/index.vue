@@ -11,7 +11,7 @@
       @goFollowers="goFollowers()"
       @goFollowing="goFollowing()"
     />
-    <profile-tabs v-model="activeTab" :tabs="tabs"/>
+<!--    <profile-tabs v-model="activeTab" :tabs="tabs"/>-->
     <profile-tabs-content :value="activeTab" :tabs="tabs">
       <template v-slot:posts>
         <profile-feed :username="username"/>

@@ -10,8 +10,9 @@
     <div class="main-header__right">
 
       <!-- Поиск (переход) -->
-      <div class="main-header__search-wrapper">
-        <base-icon size="27" @click="goSearch()">mdi-text-search-variant</base-icon>
+      <div class="main-header__tools">
+        <base-icon class="main-header__tool-item" size="24" @click="goSearch()">mdi-magnify</base-icon>
+        <base-icon class="main-header__tool-item" size="24">mdi-bell-outline</base-icon>
       </div>
 
       <!-- Аватарка -->
@@ -62,6 +63,7 @@ $side-padding-size: 16px;
   grid-template-columns: 1fr 1fr;
   position: fixed;
   top: 0;
+  left: 0;
   width: calc(100% - 2*#{$side-padding-size});
   z-index: 2;
   height: calc(var(--header-height) - 2*8px);
@@ -90,7 +92,11 @@ $side-padding-size: 16px;
     border-radius: 30px;
   }
 
-  &__search-wrapper {
+  &__tools {
+    margin-right: 10px;
+  }
+
+  &__tool-item {
     margin-right: 10px;
   }
 }

@@ -80,6 +80,7 @@ export default {
 
   &__tabs {
     position: fixed;
+    left: 0;
     top: var(--header-height);
     width: 100%;
   }

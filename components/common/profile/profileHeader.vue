@@ -35,6 +35,7 @@ export default {
 .profile-header {
   position: fixed;
   top: 0;
+  left: 0;
   z-index: 2;
   display: grid;
   grid-template-columns: var(--header-height) 1fr var(--header-height);
