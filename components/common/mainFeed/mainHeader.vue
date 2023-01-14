@@ -9,10 +9,10 @@
     <!-- RIGHT -->
     <div class="main-header__right">
 
-      <!-- Поиск (переход) -->
+      <!-- Tools (переход) -->
       <div class="main-header__tools">
         <base-icon class="main-header__tool-item" size="24" @click="goSearch()">mdi-magnify</base-icon>
-        <base-icon class="main-header__tool-item" size="24">mdi-bell-outline</base-icon>
+        <base-icon class="main-header__tool-item" v-if="isAuth" size="24">mdi-bell-outline</base-icon>
       </div>
 
       <!-- Аватарка -->

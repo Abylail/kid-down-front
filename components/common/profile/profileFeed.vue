@@ -28,10 +28,11 @@ export default {
 
     // Список постов
     list() {
-      if (this.isSelfUsername === this.username) return this._myFeed;
+      if (this.isSelfUsername) return this._myFeed;
       return this._otherFeed;
     },
 
+    // Свой ли аккаунт
     isSelfUsername() {
       return this.isAuth && this.username === this.selfUsername
     },

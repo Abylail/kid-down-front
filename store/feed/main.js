@@ -7,6 +7,9 @@ export const state = () => ({
 
   // Есть ли еще
   isHaveMore: true,
+
+  // Лента для авторизованных
+  isAuthFeed: true,
 })
 
 export const getters = {
@@ -26,13 +29,40 @@ export const mutations = {
   supplement(state, [namespace, value]) {
     state[namespace] = [...state[namespace], ...value];
   },
+
+  // Очистить
+  clear(state, isAuth = false) {
+    state.mainList = [];
+    state.mainListPage = 1;
+    state.isHaveMore = true;
+    state.isAuthFeed = isAuth;
+  },
 }
 
 export const actions = {
 
-  // Получить основную ленту (возвращает есть ли еще в пагинации)
-  async fetchMainFeed({ commit, state }) {
+  async fetchMainFeed({ commit, state, rootGetters, dispatch }) {
+    if (state.isAuthFeed !== rootGetters["user/isAuth"]) commit("clear", rootGetters["user/isAuth"]);
+    if (rootGetters["user/isAuth"]) await dispatch("fetchMainFeedAuth")
+    else await dispatch("fetchMainFeedNotAuth")
+  },
+
+  // Получить основную ленту для авторизованных (возвращает есть ли еще в пагинации)
+  async fetchMainFeedAuth({ commit, state }) {
       await this.$api.$get("/api/feed/main", {params: {page: state.mainListPage}})
+        .then(({err, body}) => {
+          if (!err) {
+            if (state.mainListPage === 1) commit("set", ["mainList", body]);
+            else commit("supplement", ["mainList", body]);
+            commit("set", ["mainListPage", state.mainListPage+1]);
+            commit("set", ["isHaveMore", !!body.length]);
+          }
+        })
+  },
+
+  // Получить основную ленту для авторизованных (возвращает есть ли еще в пагинации)
+  async fetchMainFeedNotAuth({ commit, state }) {
+      await this.$api.$get("/api/feed/general", {params: {page: state.mainListPage}})
         .then(({err, body}) => {
           if (!err) {
             if (state.mainListPage === 1) commit("set", ["mainList", body]);

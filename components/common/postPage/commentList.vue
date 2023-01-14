@@ -17,11 +17,6 @@ export default {
   data: () => ({
     isLoading: true,
   }),
-  computed: {
-    postCode() {
-      return this.$route.params.code;
-    }
-  },
   methods: {
     ...mapActions({
       _fetchList: "post/comments/fetchList",
