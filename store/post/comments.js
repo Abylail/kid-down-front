@@ -1,43 +1,35 @@
-export const state = () => ({
-  // Список коментов
-  list: [],
-  postCode: null,
-  page: 1,
-})
-
-export const getters = {
-  // Список коментов
-  getList: state => state.list,
-}
-
-export const mutations = {
-  // Вставить значение
-  set(state, [namespace, value]) {
-    state[namespace] = value;
-  },
-  // Дополнить список
-  supplement(state, [namespace, value]) {
-    state[namespace] = [...state[namespace], ...value];
-  },
-  // Увеличить число на 1
-  increment(state, namespace) {
-    state[namespace]++;
-  },
-
-  // Сбросить коменты
-  clear(state, postCode) {
-    state.list = [];
-    state.postCode = postCode;
-    state.page = 1;
-  }
-}
 
 export const actions = {
   // Получить список коментов
-  async fetchList({ state, commit }, {postCode, isInitial}) {
-    await this.$api.$get(`/api/post/comment/get/${postCode}`, {params: {page: state.page}})
-      .then(({err, body}) => {
-        if (!err) commit("supplement", ["list", body.comments])
-      })
-  }
+  fetchList({}, {postCode, page = 1}) {
+    return new Promise(resolve => {
+      this.$api.$get(`/api/post/comment/get/${postCode}`, {params: {page}})
+        .then(({err, body}) => {
+          if (!err) return resolve(body?.comments || []);
+          resolve([]);
+        })
+    })
+  },
+
+  // Лайк
+  like({}, {post_code, comment_code}) {
+    return new Promise(resolve => {
+      this.$api.$post("/api/post/comment/like", {post_code, comment_code})
+        .then(({err}) => {
+          if (err) resolve(false);
+          else resolve(true);
+        })
+    })
+  },
+
+  // Дизлайк
+  unlike({}, {post_code, comment_code}) {
+    return new Promise(resolve => {
+      this.$api.$post("/api/post/comment/unlike", {post_code, comment_code})
+        .then(({err}) => {
+          if (err) resolve(true);
+          else resolve(false);
+        })
+    })
+  },
 }

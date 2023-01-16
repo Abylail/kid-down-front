@@ -73,6 +73,11 @@
       <!-- Колличество лайков -->
       <div class="feed-item__liked-count"><span @click.stop="goLikes">Нравится: {{ likesCount }}</span></div>
 
+    <!-- Смотреть коменнтарии если есть -->
+    <div class="feed-item__show-comments" v-if="!isPage && value.comment_count">
+      Смотреть комментарии ({{ value.comment_count }})
+    </div>
+
       <!-- Когда выложенно -->
       <div class="feed-item__time">{{ timeAgo }}</div>
 
@@ -88,7 +93,7 @@
 <script>
 import BaseIcon from "@/components/base/BaseIcon";
 import Fade from "@/components/transitions/fade";
-import {mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 export default {
   name: "item",
   components: {BaseIcon, Fade},
@@ -114,18 +119,25 @@ export default {
     value: {
       type: Object,
       default: () => ({})
+    },
+    isPage: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
+    ...mapGetters({
+      isAuth: "user/isAuth",
+    }),
     // Ссылка на картинку пользователя
     avatarUrl() {
-      if (!this.value.author_avatar) return null;
+      if (!this.value?.author_avatar) return null;
       return process.env.CDN_URL + this.value.author_avatar;
     },
 
     // Ссылка на картинку контента
     pictureUrl() {
-      if (!this.value.picture.path) return null;
+      if (!this.value?.picture?.path) return null;
       return process.env.CDN_URL + this.value.picture.path;
     },
 
@@ -191,6 +203,7 @@ export default {
 
     // Большой лайк
     contentLike() {
+      if (this.blockUnauthorized()) return;
       if (!this.isLiked) this.toggleLikeHandle();
       this.showBigLikeAnimation = true;
 
@@ -222,6 +235,7 @@ export default {
 
     // Нажатие на лайк
     toggleLikeHandle() {
+      if (this.blockUnauthorized()) return;
       if (this.likedSync === null) this.likedSync = !!this.value.my_like;
       this.liked = !this.isLiked;
 
@@ -245,6 +259,16 @@ export default {
       if (this.liked !== this.likedSync) {
         this.liked = this.likedSync;
       }
+    },
+
+    // Блокировать если не авторизован
+    blockUnauthorized() {
+      if (!this.isAuth) {
+        this.bridgeInfo();
+        this.$goLogin(`/post/${this.value.code}`);
+        return true;
+      }
+      return false;
     },
 
     // Перейти к лайкам
@@ -318,10 +342,16 @@ $avatar-size: 40px;
     color: var(--color-blue);
   }
 
-  &__time {
-    margin-top: 4px;
+  &__show-comments {
+    margin-top: 5px;
     color: var(--text-color-extra);
     font-size: var(--font-size-mini);
+  }
+
+  &__time {
+    margin-top: 5px;
+    color: var(--text-color-extra);
+    font-size: var(--font-size-nano);
   }
 
   &__picture {
@@ -379,25 +409,6 @@ $avatar-size: 40px;
   &__big-like-heart {
     animation: animateHeart 1.2s;
     animation-delay: .1s;
-  }
-}
-
-// Стиль для лайка
-.like {
-  &--default {
-    color: var(--text-color-primary);
-  }
-  &--liked {
-    color: var(--color-red);
-  }
-
-  &:active {
-    .like--default {
-      color: var(--color-red);
-    }
-    .like--liked {
-      color: var(--text-color-primary);
-    }
   }
 }
 

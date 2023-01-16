@@ -3,8 +3,9 @@
     <simple-header>Пост</simple-header>
     <item-skeleton v-if="isLoading" picture/>
     <div class="post-page__post" v-else>
-      <item :value="postInfo"/>
+      <item :value="postInfo" is-page/>
     </div>
+    <comment-input/>
     <comment-list :post-code="postCode"/>
   </div>
 </template>
@@ -14,10 +15,11 @@ import {mapActions, mapGetters} from "vuex";
 import Item from "@/components/common/feed/item";
 import ItemSkeleton from "@/components/common/feed/itemSkeleton";
 import SimpleHeader from "@/components/common/headers/simpleHeader";
-import CommentList from "@/components/common/postPage/commentList";
+import CommentList from "@/components/common/comments/commentList";
+import CommentInput from "@/components/common/comments/commentInput";
 export default {
   name: "index",
-  components: {CommentList, SimpleHeader, ItemSkeleton, Item},
+  components: {CommentInput, CommentList, SimpleHeader, ItemSkeleton, Item},
   computed: {
     ...mapGetters({
       postInfo: "post/getPostInfo",
@@ -53,5 +55,6 @@ export default {
 <style lang="scss" scoped>
 .post-page {
   padding-top: var(--header-height);
+  padding-bottom: 50px;
 }
 </style>

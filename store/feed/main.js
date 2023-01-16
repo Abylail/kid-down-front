@@ -41,6 +41,7 @@ export const mutations = {
 
 export const actions = {
 
+  // Получить основную ленту
   async fetchMainFeed({ commit, state, rootGetters, dispatch }) {
     if (state.isAuthFeed !== rootGetters["user/isAuth"]) commit("clear", rootGetters["user/isAuth"]);
     if (rootGetters["user/isAuth"]) await dispatch("fetchMainFeedAuth")
