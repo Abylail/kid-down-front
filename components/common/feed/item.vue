@@ -15,11 +15,11 @@
 
           <!-- Имя -->
             <div class="feed-item__name-wrapper">
-              <span class="feed-item__name" @click.stop="goAuthorProfile()">{{ value.author_name  }}</span>
-              <span class="feed-item__username" @click.stop="goAuthorProfile()">@{{ value.author_username  }}</span>
+              <span class="feed-item__name" @click.stop="goAuthorProfile()">{{ myValue.author_name  }}</span>
+              <span class="feed-item__username" @click.stop="goAuthorProfile()">@{{ myValue.author_username  }}</span>
             </div>
             <!-- Тема (категория) -->
-            <div class="feed-item__category" v-if="value.category_name" @click.stop>{{ value.category_name }}</div>
+            <div class="feed-item__category" v-if="myValue.category_name" @click.stop>{{ myValue.category_name }}</div>
           </div>
         <div>
         </div>
@@ -27,12 +27,12 @@
 
       <!-- Контент (текст и фото) -->
       <div class="feed-item__content">
-        <div class="feed-item_text">{{ value.text }}</div>
+        <div class="feed-item_text">{{ myValue.text }}</div>
         <img
           class="feed-item__picture skeleton"
           v-if="pictureUrl"
           :data-src="pictureUrl"
-          :alt="value.author_username"
+          :alt="myValue.author_username"
           :style="{aspectRatio: pictureRatio}"
           v-lazy-load
         >
@@ -74,8 +74,8 @@
       <div class="feed-item__liked-count"><span @click.stop="goLikes">Нравится: {{ likesCount }}</span></div>
 
     <!-- Смотреть коменнтарии если есть -->
-    <div class="feed-item__show-comments" v-if="!isPage && value.comment_count">
-      Смотреть комментарии ({{ value.comment_count }})
+    <div class="feed-item__show-comments" v-if="!isPage && myValue.comment_count">
+      Смотреть комментарии ({{ myValue.comment_count }})
     </div>
 
       <!-- Когда выложенно -->
@@ -131,19 +131,24 @@ export default {
     }),
     // Ссылка на картинку пользователя
     avatarUrl() {
-      if (!this.value?.author_avatar) return null;
-      return process.env.CDN_URL + this.value.author_avatar;
+      if (!this.myValue?.author_avatar) return null;
+      return process.env.CDN_URL + this.myValue.author_avatar;
     },
 
     // Ссылка на картинку контента
     pictureUrl() {
-      if (!this.value?.picture?.path) return null;
-      return process.env.CDN_URL + this.value.picture.path;
+      if (!this.myValue?.picture?.path) return null;
+      return process.env.CDN_URL + this.myValue.picture.path;
+    },
+
+    // Значение
+    myValue() {
+      return this.value || {}
     },
 
     // Времени
     timeAgo() {
-      const minutesAgo = (new Date().getTime() - new Date(this.value.created_at).getTime()) / 60000;
+      const minutesAgo = (new Date().getTime() - new Date(this.myValue.created_at).getTime()) / 60000;
       if (minutesAgo < 1) return "прям только что";
       if (minutesAgo < 60) return `${Math.ceil(minutesAgo)} минут назад`
       if (minutesAgo < 24 * 60) return `${Math.ceil(minutesAgo/60)} часов назад`;
@@ -152,29 +157,29 @@ export default {
 
     // Пропорция картинки
     pictureRatio() {
-      if (!this.value.picture.height || !this.value.picture.width) return null;
+      if (!this.myValue.picture.height || !this.myValue.picture.width) return null;
       // console.log(this.value.text, this.value.picture.height/this.value.picture.width)
-      return `${this.value.picture.width}/${this.value.picture.height}`;
+      return `${this.myValue.picture.width}/${this.myValue.picture.height}`;
     },
 
     // Лайкнуто ли
     isLiked() {
-      if (this.liked === null) return this.value.my_like;
+      if (this.liked === null) return this.myValue.my_like;
       return this.liked;
     },
 
     // Колличество лайков
     likesCount() {
-      if (this.innerLikesCount === null) return this.value.like_count;
+      if (this.innerLikesCount === null) return this.myValue.like_count;
       return this.innerLikesCount;
     },
 
     // Данные для поделиться
     shareData() {
       return {
-        title: `${this.value.author_name} ${this.value.author_username} - TOXY`,
-        text: this.value.text,
-        url: `${window.location.origin}/post/${this.value.code}`
+        title: `${this.myValue.author_name} ${this.myValue.author_username} - TOXY`,
+        text: this.myValue.text,
+        url: `${window.location.origin}/post/${this.myValue.code}`
       }
     },
 
@@ -225,18 +230,18 @@ export default {
     goPostPage() {
       // Закидываю информацию о посте для перехода на страницу
       this.bridgeInfo();
-      this.$router.push(`/post/${this.value.code}`);
+      this.$router.push(`/post/${this.myValue.code}`);
     },
 
     // Перейти в профиль автора
     goAuthorProfile() {
-      this.$router.push(`/user/${this.value.author_username}`)
+      this.$router.push(`/user/${this.myValue.author_username}`)
     },
 
     // Нажатие на лайк
     toggleLikeHandle() {
       if (this.blockUnauthorized()) return;
-      if (this.likedSync === null) this.likedSync = !!this.value.my_like;
+      if (this.likedSync === null) this.likedSync = !!this.myValue.my_like;
       this.liked = !this.isLiked;
 
       // Изменения колличества лайков
@@ -253,8 +258,8 @@ export default {
     async toggleLike() {
       if (this.likedSync === this.liked) return;
 
-      if (this.liked) this.likedSync = await this._like({post_code: this.value.code, post_category: this.value.category_code});
-      else this.likedSync = await this._unlike({post_code: this.value.code, post_category: this.value.category_code});
+      if (this.liked) this.likedSync = await this._like({post_code: this.myValue.code, post_category: this.myValue.category_code});
+      else this.likedSync = await this._unlike({post_code: this.myValue.code, post_category: this.myValue.category_code});
 
       if (this.liked !== this.likedSync) {
         this.liked = this.likedSync;
@@ -265,7 +270,7 @@ export default {
     blockUnauthorized() {
       if (!this.isAuth) {
         this.bridgeInfo();
-        this.$goLogin(`/post/${this.value.code}`);
+        this.$goLogin(`/post/${this.myValue.code}`);
         return true;
       }
       return false;
@@ -275,7 +280,7 @@ export default {
     goLikes() {
       // Закидываю информацию о посте для перехода на страницу
       this.bridgeInfo();
-      this.$router.push(`/post/${this.value.code}/likes`);
+      this.$router.push(`/post/${this.myValue.code}/likes`);
     },
 
     // Кнопка поделиться
