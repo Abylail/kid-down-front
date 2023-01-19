@@ -11,6 +11,24 @@ export const actions = {
     })
   },
 
+  // Отправить коментарий
+  sendComment({rootGetters}, {post_code, comment_text, first_comment, parent_comment_code}) {
+    return new Promise(resolve => {
+      this.$api.$post("/api/post/comment/add", {post_code, post_author: rootGetters["user/getUsername"], comment_text, first_comment, parent_comment_code})
+        .then(({err, body}) => {
+          if (err) resolve(null);
+          else resolve({
+            comment_text: comment_text,
+            created_at: new Date(),
+            likes_count: 0,
+            my_like: false,
+            comment_code: body,
+            comment_author: rootGetters["user/getUserInfo"]
+          });
+        })
+    })
+  },
+
   // Лайк
   like({}, {post_code, comment_code}) {
     return new Promise(resolve => {

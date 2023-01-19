@@ -47,7 +47,7 @@ export default {
 .base-button {
   width: 100%;
   text-align: center;
-  border-radius: 100px;
+  border-radius: 5px;
   transition: .1s;
   border: none;
   white-space: nowrap;

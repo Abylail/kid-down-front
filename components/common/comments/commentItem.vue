@@ -1,41 +1,26 @@
 <template>
   <div class="comment-item">
 
-    <div class="comment-item__left">
-      <div
-        class="comment-item__avatar"
-        :style="{backgroundImage: authorAvatarStyle}"
-      />
+    <div class="comment-item__info">
+      <comment-info :value="value"/>
+
+      <div class="comment-item__right">
+        <!-- Лайк -->
+        <button class="feed-item__tool like" @click.stop="toggleLikeHandle()">
+          <base-icon class="like--liked" size="15" v-if="isLiked" key="liked">mdi-heart</base-icon>
+          <base-icon class="like--default" size="15" v-else key="default">mdi-heart-outline</base-icon>
+        </button>
+      </div>
     </div>
-
-    <div class="comment-item__center">
-
-      <div class="comment-item__author-info">
-        <span class="comment-item__author-name">{{ authorInfo.name }}</span>
-        <span class="comment-item__author-username">@{{ authorInfo.username }}</span>
-      </div>
-
-      <div class="comment-item__content">
-        {{ value.comment_text }}
-      </div>
 
       <div class="comment-item__tools">
         <div class="comment-item__tool">Нравится: {{ likeCount }}</div>
-        <comment-input>
+        <comment-input :comment-info="value">
           <template v-slot:activator="{activator}">
             <div class="comment-item__tool" @click="activator()">Ответить</div>
           </template>
         </comment-input>
       </div>
-    </div>
-
-    <div class="comment-item__right">
-      <!-- Лайк -->
-      <button class="feed-item__tool like" @click.stop="toggleLikeHandle()">
-        <base-icon class="like--liked" size="15" v-if="isLiked" key="liked">mdi-heart</base-icon>
-        <base-icon class="like--default" size="15" v-else key="default">mdi-heart-outline</base-icon>
-      </button>
-    </div>
   </div>
 </template>
 
@@ -43,9 +28,10 @@
 import BaseIcon from "@/components/base/BaseIcon";
 import {mapActions} from "vuex";
 import CommentInput from "@/components/common/comments/commentInput";
+import CommentInfo from "@/components/common/comments/commentInfo";
 export default {
   name: "commentItem",
-  components: {CommentInput, BaseIcon},
+  components: {CommentInfo, CommentInput, BaseIcon},
   props: {
     value: {
       type: Object,
@@ -53,7 +39,7 @@ export default {
     },
     postCode: {
       type: String,
-    }
+    },
   },
   data: () => ({
     // Лайкнул ли я
@@ -139,36 +125,16 @@ export default {
 $avatar-size: 35px;
 $like-size: 15px;
 .comment-item {
-  display: grid;
-  grid-template-columns: $avatar-size 1fr $like-size;
-  grid-column-gap: 10px;
   margin-bottom: 15px;
 
-  &__avatar {
-    height: $avatar-size;
-    width: $avatar-size;
-    border-radius: 50px;
-    background: var(--background-color-secondary);
-    background-position: center;
-    background-size: cover;
-  }
-
-  &__author-name {
-    font-size: var(--font-size-mini);
-  }
-
-  &__author-username {
-    font-size: var(--font-size-mini);
-    color: var(--text-color-extra);
-  }
-
-  &__content {
-    color: var(--text-color-secondary);
-    margin-top: 2px;
-    font-size: var(--font-size-subtext);
+  &__info {
+    display: grid;
+    grid-template-columns: 1fr $like-size;
+    grid-column-gap: 10px;
   }
 
   &__tools {
+    padding-left: $avatar-size + 10px;
     display: flex;
     flex-direction: row;
     margin-top: 5px;

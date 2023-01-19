@@ -95,9 +95,9 @@ export default {
       this.$emit("blur");
     },
 
-    // Сфокусироваться на инпуте
+    // Сфокусироваться на инпуте (Внешний)
     $focus() {
-      this.$refs.input.focus();
+      this.$refs.input.click();
     }
   },
   mounted() {

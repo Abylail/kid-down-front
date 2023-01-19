@@ -5,8 +5,8 @@
     <div class="post-page__post" v-else>
       <item :value="postInfo" is-page/>
     </div>
-    <comment-input/>
-    <comment-list :post-code="postCode"/>
+    <comment-input :post-info="postInfo" @send="sendComment($event)"/>
+    <comment-list ref="list" :post-code="postCode"/>
   </div>
 </template>
 
@@ -43,6 +43,11 @@ export default {
       this.isLoading = true;
       await this._fetchPostByCode({post_code: this.postCode});
       this.isLoading = false;
+    },
+
+    // Отправить коммент
+    sendComment(text) {
+      this.$refs.list.$sendComment({commentInfo: {text}})
     },
   },
   async fetch() {
