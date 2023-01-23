@@ -111,7 +111,7 @@ export default {
     left: 0;
     right: 0;
     padding-bottom: 18px;
-    transition: 0.3s;
+    transition: 0.4s;
     border-radius: 16px 16px 0 0;
 
     // на полную страницу

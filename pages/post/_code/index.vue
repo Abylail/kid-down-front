@@ -50,9 +50,9 @@ export default {
       this.$refs.list.$sendComment({commentInfo: {text}})
     },
   },
-  async fetch() {
-    if (this.postInfo) this.isLoading = false;
-    else await this.fetchPostByCode();
+  async created() {
+    await this.fetchPostByCode();
+    this.isLoading = false;
   }
 }
 </script>

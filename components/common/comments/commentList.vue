@@ -57,7 +57,6 @@ export default {
       const newComment = await this._sendComment({
         post_code: this.postCode,
         comment_text: commentInfo.text,
-        first_comment: !!this.list.length,
       });
       if (newComment) this.list.unshift(newComment);
       this.isLoading = false;

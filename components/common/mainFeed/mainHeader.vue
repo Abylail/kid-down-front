@@ -12,7 +12,7 @@
       <!-- Tools (переход) -->
       <div class="main-header__tools">
         <base-icon class="main-header__tool-item" size="24" @click="goSearch()">mdi-magnify</base-icon>
-        <base-icon class="main-header__tool-item" v-if="isAuth" size="24">mdi-bell-outline</base-icon>
+        <notification-tool class="main-header__tool-item" v-if="isAuth"/>
       </div>
 
       <!-- Аватарка -->
@@ -27,9 +27,10 @@
 <script>
 import BaseIcon from "@/components/base/BaseIcon";
 import {mapGetters} from "vuex";
+import NotificationTool from "@/components/common/mainFeed/notificationTool";
 export default {
   name: "mainHeader",
-  components: {BaseIcon},
+  components: {NotificationTool, BaseIcon},
   computed: {
     ...mapGetters({
       isAuth: "user/isAuth",
@@ -51,7 +52,7 @@ export default {
     // Перейти в поиск
     goSearch() {
       this.$router.push("/search");
-    }
+    },
   },
 }
 </script>
@@ -79,6 +80,7 @@ $side-padding-size: 16px;
 
   &__right {
     display: flex;
+    display:-webkit-flex;
     align-items: center;
     justify-content: right;
     text-align: right;

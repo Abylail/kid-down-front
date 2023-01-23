@@ -12,9 +12,9 @@ export const actions = {
   },
 
   // Отправить коментарий
-  sendComment({rootGetters}, {post_code, comment_text, first_comment, parent_comment_code}) {
+  sendComment({rootGetters}, {post_code, comment_text, parent_comment_code}) {
     return new Promise(resolve => {
-      this.$api.$post("/api/post/comment/add", {post_code, post_author: rootGetters["user/getUsername"], comment_text, first_comment, parent_comment_code})
+      this.$api.$post("/api/post/comment/add", {post_code, post_author: rootGetters["user/getUsername"], comment_text, parent_comment_code})
         .then(({err, body}) => {
           if (err) resolve(null);
           else resolve({
