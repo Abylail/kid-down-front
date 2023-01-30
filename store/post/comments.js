@@ -23,7 +23,8 @@ export const actions = {
             likes_count: 0,
             my_like: false,
             comment_code: body,
-            comment_author: rootGetters["user/getUserInfo"]
+            comment_author: rootGetters["user/getUserInfo"],
+            isNew: true
           });
         })
     })

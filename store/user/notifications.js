@@ -32,7 +32,8 @@ export const mutations = {
 
 export const actions = {
   // Получить колличество новых уведомлений
-  fetchNewCount({ commit }) {
+  fetchNewCount({ commit, rootGetters }) {
+    if (!rootGetters["user/isAuth"]) return;
     this.$api.$get("/api/notify/get/count")
       .then(({err, body}) => {
         if (!err) commit("set", ["newCount", body]);

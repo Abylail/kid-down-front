@@ -1,5 +1,5 @@
 <template>
-  <div class="comment-item">
+  <div class="comment-item" :class="{'new-go-out': value.isNew}">
 
     <div class="comment-item__info">
       <comment-info :value="value"/>
@@ -126,6 +126,7 @@ $avatar-size: 35px;
 $like-size: 15px;
 .comment-item {
   margin-bottom: 15px;
+  padding: 5px 15px;
 
   &__info {
     display: grid;

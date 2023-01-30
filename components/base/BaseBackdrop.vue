@@ -1,7 +1,7 @@
 <template>
   <div class="base-backdrop__background" :class="{active: active}" @click.self.stop="closeSelf" @touchmove.prevent.stop>
     <div class="base-backdrop__window" :class="[{'base-backdrop__window--full-page': fullPage}, {active: active}]" ref="dragWrapper" :style="dragStyle">
-      <div class="base-backdrop__holder" @touchmove.prevent.stop="dragging" @touchstart.prevent.stop="startDrag" @touchend.prevent.stop="stopDrag"/>
+      <button class="base-backdrop__holder" @touchmove.prevent.stop="dragging" @touchstart.prevent.stop="startDrag" @touchend.prevent.stop="stopDrag"/>
       <slot/>
     </div>
   </div>
@@ -130,6 +130,10 @@ export default {
     justify-content: center;
     align-items: center;
     height: 25px;
+    width: 100%;
+    background: none;
+    border: none;
+    outline: none;
     &:after {
       display: inline-block;
       content: "";

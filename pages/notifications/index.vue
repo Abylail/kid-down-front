@@ -3,15 +3,20 @@
     <simple-header>Уведомления</simple-header>
 
     <div class="notifications__list">
-      <div class="notifications__item" v-for="(notify, index) in list" :key="index">
+      <div class="notifications__item" :class="{'new-go-out': notify.status === 'new'}" v-for="(notify, index) in list" :key="index">
         <div class="notifications__avatar" v-if="notify.action_author" :style="{backgroundImage: `url(${CDN_URL+notify.user.avatar})`}" @click="goAuthor(notify)"/>
         <div class="notifications__info-wrapper">
           <span class="notifications__username" @click="goAuthor(notify)">{{ notify.action_author }}</span>
 
-          <!-- post_like -->
+          <!-- Лайк поста post_like -->
           <span v-if="notify.action_code === 'post_like'">
             нравится ваш
             <nuxt-link class="notifications__link" :to="`/post/${notify.action_body.post.code}`">пост</nuxt-link>
+          </span>
+
+          <!-- Подписка subscribe -->
+          <span v-if="notify.action_code === 'subscribe'">
+            подписался(-ась) на вас
           </span>
 
           <span class="notifications__date">{{ notify.created_at | timeAgoMini }}</span>
@@ -65,11 +70,14 @@ export default {
 .notifications {
   padding-top: var(--header-height);
 
+  &__list {
+    padding-top: 10px;
+  }
+
   &__item {
     display: flex;
     align-items: center;
-    padding: 0 15px;
-    margin-top: 20px;
+    padding: 10px 15px;
   }
 
   &__avatar {

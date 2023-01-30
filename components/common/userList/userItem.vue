@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 import BaseButton from "@/components/base/BaseButton";
 
 export default {
@@ -23,6 +23,16 @@ export default {
       type: Object
     }
   },
+  data: () => ({
+    // Таймаут подписания
+    subscribeTimeout: null,
+
+    // Моя подписка после поля подписан
+    mySubscribe: null,
+
+    // Моя подписка синхронизированная с бэком
+    mySubscribeSync: null,
+  }),
   computed: {
     ...mapGetters({
       isAuth: "user/isAuth",
@@ -32,6 +42,7 @@ export default {
     // Уже подписан
     isSubscribed() {
       if (!this.isAuth) return false;
+      if (this.mySubscribe !== null) return this.mySubscribe;
       return this.value.subscribed;
     },
 
@@ -53,6 +64,11 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      _subscribe: "user/subscribe",
+      _unsubscribe: "user/unsubscribe",
+    }),
+
     // Перейти в аккаунт
     goAccount() {
       this.$router.push(`/user/${this.value.username}`)
@@ -61,11 +77,22 @@ export default {
     // Подписаться/отписаться кнопка
     subscribeToggleHandle() {
       if (this.isAuth) this.subscribeToggle();
+      else this.$goLogin(`/user/${this.value.username}`);
     },
 
     // Подписаться/отписаться
     subscribeToggle() {
-
+      if (this.mySubscribeSync === null) this.mySubscribeSync = !!this.isSubscribed;
+      this.mySubscribe = !this.isSubscribed;
+      clearTimeout(this.subscribeTimeout);
+      this.subscribeTimeout = setTimeout(async () => {
+        if (this.mySubscribeSync === this.mySubscribe) return;
+        let isSubscribed = null;
+        if (!this.mySubscribeSync) isSubscribed = await this._subscribe(this.value.username);
+        else isSubscribed = await this._unsubscribe(this.value.username);
+        this.mySubscribeSync = isSubscribed;
+        this.mySubscribe = !!this.mySubscribeSync;
+      }, 500)
     },
   }
 }
@@ -103,6 +130,7 @@ $height: 35px;
     display: flex;
     align-items: center;
     justify-content: right;
+    -webkit-justify-content: flex-end;
   }
 }
 </style>

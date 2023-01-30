@@ -5,10 +5,10 @@ export const state = () => ({
 
 export const getters  = {
   // Токен пользователя
-  getUserToken: state => state.userInfo?.token,
+  getUserToken: state => state.userInfo?.token || process.env.UNAUTH_TOKEN,
 
   // username пользователя
-  getUsername: state => state.userInfo?.username,
+  getUsername: state => state.userInfo?.username || process.env.UNAUTH_USERNAME,
 
   // Информация пользователя
   getUserInfo: state => state.userInfo,

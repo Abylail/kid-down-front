@@ -64,6 +64,7 @@ export default {
 
 <style lang="scss" scoped>
 $push-color: var(--color-red);
+$push-width: 40px;
 .notification-tool {
   display: inline-block;
   position: relative;
@@ -82,20 +83,20 @@ $push-color: var(--color-red);
 
   &__push-wrapper {
     position: absolute;
-    width: 32px;
-    left: -3px;
-    bottom: -100%;
+    width: $push-width;
+    left: -7px;
+    bottom: -130%;
   }
 
   &__push {
     position: relative;
-    margin: 0 auto;
+    margin: 0 auto 0;
     text-align: center;
-    font-size: var(--font-size-mini);
+    font-size: var(--font-size-subtext);
     background: $push-color;
     z-index: 1;
     border-radius: 3px;
-    padding: 3px 0;
+    padding: 5px 0;
 
     &::before {
       z-index: 0;
@@ -103,7 +104,7 @@ $push-color: var(--color-red);
       content: "";
       position: absolute;
       top: -7px;
-      left: 8px;
+      left: 11px;
       width: 0;
       height: 0;
       border-left: 8px solid transparent;

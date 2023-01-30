@@ -83,6 +83,7 @@ $side-padding-size: 16px;
     display:-webkit-flex;
     align-items: center;
     justify-content: right;
+    -webkit-justify-content: flex-end;
     text-align: right;
   }
 

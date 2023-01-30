@@ -2,10 +2,9 @@
   <div class="window-list">
     <subscribes-header :title="title" :count="list.length" @goBack="$emit('goBack')"/>
     <div class="window-list__list">
-      <account-item
+      <user-item
         v-for="item in list" :key="item.username"
         :value="item"
-        @subscribeToggle="subscribeToggle(item)"
       />
     </div>
   </div>
@@ -14,10 +13,10 @@
 <script>
 import SubscribesHeader from "@/components/common/subcribers/subscribesHeader";
 import {mapActions, mapGetters} from "vuex";
-import AccountItem from "@/components/common/subcribers/accountItem";
+import UserItem from "@/components/common/userList/userItem";
 export default {
   name: "windowList",
-  components: {AccountItem, SubscribesHeader},
+  components: {UserItem, SubscribesHeader},
   props: {
     type: {
       type: String,
@@ -62,35 +61,6 @@ export default {
       _subscribe: "user/subscribe",
       _unsubscribe: "user/unsubscribe",
     }),
-
-    // Подписка/отписка
-    subscribeToggle(item) {
-      this.setSubscribe(item);
-      clearTimeout(this.subscribeTimeout);
-      this.subscribeTimeout = setTimeout(async () => {
-        if (item.subscribed === this.getListSyncValue(item).subscribed) return;
-        let isSubscribed = null;
-        if (item.subscribed) isSubscribed = await this._subscribe(item.username);
-        else isSubscribed = await this._unsubscribe(item.username);
-        this.setSubscribeSync(item, isSubscribed);
-        this.list = JSON.parse(JSON.stringify(this.listSync));
-      }, 500);
-    },
-
-    // Вставить подписание
-    setSubscribe(item) {
-      item.subscribed = !item.subscribed;
-    },
-
-    // Получить значение из синхронизированного списка
-    getListSyncValue(item) {
-      return this.listSync.find(listItem => listItem.username === item.username);
-    },
-
-    // Вставить подписание синхронизированное с бэком
-    setSubscribeSync(item, value) {
-      this.listSync.find(listItem => listItem.username === item.username).subscribed = value;
-    },
 
     // Получить список
     async fetchList() {

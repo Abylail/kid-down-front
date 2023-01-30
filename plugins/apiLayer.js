@@ -9,11 +9,9 @@ const createCatcher = toast => err => {
 /** Создание options */
 const createOptions = (outerOptions, store) => {
   let options = {...outerOptions};
-  if (store.getters["user/isAuth"]) {
-    if (!options.headers) options.headers = {};
-    options.headers.token = store.getters["user/getUserToken"];
-    options.headers.username = store.getters["user/getUsername"];
-  }
+  if (!options.headers) options.headers = {};
+  options.headers.token = store.getters["user/getUserToken"];
+  options.headers.username = store.getters["user/getUsername"];
   return options;
 }
 

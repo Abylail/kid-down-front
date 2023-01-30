@@ -70,7 +70,6 @@ export default {
 
 <style lang="scss" scoped>
 .comments {
-  padding: 0 15px;
 
   &__loader {
     display: block;

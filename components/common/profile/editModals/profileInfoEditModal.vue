@@ -94,6 +94,7 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: right;
+    -webkit-justify-content: flex-end;
     & > :first-child {
       margin-right: 10px;
     }

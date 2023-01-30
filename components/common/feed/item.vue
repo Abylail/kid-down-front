@@ -63,9 +63,9 @@
         <!-- Взаимодействия (Поделиться) -->
         <div class="feed-item__tools-left">
           <!-- Поделиться -->
-          <button class="feed-item__tool share-button" v-if="isCanShare" @click.stop="shareHandle()">
-            <base-icon size="22">mdi-share</base-icon>
-          </button>
+<!--          <button class="feed-item__tool share-button" v-if="isCanShare" @click.stop="shareHandle()">-->
+<!--            <base-icon size="22">mdi-share</base-icon>-->
+<!--          </button>-->
         </div>
 
       </div>
@@ -79,7 +79,7 @@
     </div>
 
       <!-- Когда выложенно -->
-      <div class="feed-item__time">{{ timeAgo }}</div>
+      <div class="feed-item__time">{{ myValue.created_at | timeAgo }}</div>
 
     <fade>
       <div class="feed-item__big-like" v-if="showBigLikeAnimation">
@@ -144,15 +144,6 @@ export default {
     // Значение
     myValue() {
       return this.value || {}
-    },
-
-    // Времени
-    timeAgo() {
-      const minutesAgo = (new Date().getTime() - new Date(this.myValue.created_at).getTime()) / 60000;
-      if (minutesAgo < 1) return "прям только что";
-      if (minutesAgo < 60) return `${Math.ceil(minutesAgo)} минут назад`
-      if (minutesAgo < 24 * 60) return `${Math.ceil(minutesAgo/60)} часов назад`;
-      return "больше дня назад";
     },
 
     // Пропорция картинки
@@ -293,7 +284,7 @@ export default {
     // Кнопка отправить
     sendHandle() {
       if (window.navigator?.canShare(this.shareData)) {
-        window.navigator.share(this.shareData);
+        window.navigator?.share(this.shareData);
       }
     },
   },
