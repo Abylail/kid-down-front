@@ -45,7 +45,6 @@ export const actions = {
   // Авторизация по токену + информация пользователя
   async tokenAuth({ commit, state, getters, dispatch }, outerToken = state.userInfo?.token) {
     let token = outerToken || this.$cookies.get("userToken");
-    if (!token) return;
     await this.$api.$post("/api/auth/login/token", {token})
       .then(({err, body}) => {
         if (!err) {

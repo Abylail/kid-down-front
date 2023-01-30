@@ -3,7 +3,7 @@
 
     <!-- Посты -->
     <item
-      v-for="item in value" :key="item.code"
+      v-for="(item, index) in value" :key="index"
       :value="item"
     />
 
