@@ -1,7 +1,7 @@
 
 const createCatcher = toast => err => {
   if (err && err.response && err.response.data && err.response.data.message) {
-    if (toast) toast.error(err.response.data.message);
+    if (toast && !process.env.prod) toast.error(err.response.data.message);
     else console.error(err.response.data.message);
   }
 }

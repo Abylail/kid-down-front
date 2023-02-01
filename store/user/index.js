@@ -29,9 +29,9 @@ export const mutations = {
 export const actions = {
 
   // Войти через логин и пароль
-  login({ commit, dispatch }, {username, password}) {
+  login({ commit, dispatch }, {username, password, remember = true}) {
     return new Promise(resolve => {
-      this.$api.$post("/api/auth/login/credentials", {username, password})
+      this.$api.$post("/api/auth/login/credentials", {username, password, remember})
         .then(async ({err, body}) => {
           if (!err) {
             this.$cookies.set("userToken", body.token, {path: "/", maxAge: 3600 * 24 * 30});

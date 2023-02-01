@@ -120,7 +120,15 @@ export default {
       type: Object,
       default: () => ({})
     },
+
+    // Страница поста?
     isPage: {
+      type: Boolean,
+      default: false
+    },
+
+    // Свой ли профиль
+    inSelfProfile: {
       type: Boolean,
       default: false
     }
