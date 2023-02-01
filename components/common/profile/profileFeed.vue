@@ -1,6 +1,6 @@
 <template>
   <div class="profile-feed">
-    <list :value="list" :loading="isLoading" @paginate="fetchUserFeed()"/>
+    <list :isSelfProfile="isSelfUsername" :value="list" :loading="isLoading" @paginate="fetchUserFeed()"/>
   </div>
 </template>
 

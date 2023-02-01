@@ -66,6 +66,12 @@
 <!--          <button class="feed-item__tool share-button" v-if="isCanShare" @click.stop="shareHandle()">-->
 <!--            <base-icon size="22">mdi-share</base-icon>-->
 <!--          </button>-->
+          <!-- Опции взаимодействия -->
+          <base-options v-if="isSelfProfile" :options="selfOptions" @click:delete="deleteHandle()" @click:pin="pinHandle()">
+            <template v-slot="{ activate }">
+              <base-icon size="22" @click.prevent.stop="activate()">mdi-dots-vertical</base-icon>
+            </template>
+          </base-options>
         </div>
 
       </div>
@@ -94,9 +100,10 @@
 import BaseIcon from "@/components/base/BaseIcon";
 import Fade from "@/components/transitions/fade";
 import {mapActions, mapGetters} from "vuex";
+import BaseOptions from "@/components/base/BaseOptions";
 export default {
   name: "item",
-  components: {BaseIcon, Fade},
+  components: {BaseOptions, BaseIcon, Fade},
   data: () => ({
     // Лайкнуто ли (только с изменениями)
     liked: null,
@@ -114,6 +121,12 @@ export default {
 
     // Показать анимацию большого лайка
     showBigLikeAnimation: false,
+
+    // Опции
+    selfOptions: [
+      {name: "Удалить", actionCode: "delete"},
+      {name: "Закрепить", actionCode: "pin"}
+    ]
   }),
   props: {
     value: {
@@ -128,7 +141,7 @@ export default {
     },
 
     // Свой ли профиль
-    inSelfProfile: {
+    isSelfProfile: {
       type: Boolean,
       default: false
     }
@@ -295,6 +308,18 @@ export default {
         window.navigator?.share(this.shareData);
       }
     },
+
+    // Удалить себя
+    deleteHandle() {
+      this.$emit("delete", this.myValue);
+    },
+
+    // Закрепить себя
+    pinHandle() {
+      debugger
+      this.$toast("В разарботке)");
+      this.$emit("pin", this.myValue);
+    }
   },
 }
 </script>

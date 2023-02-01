@@ -5,6 +5,7 @@
     <item
       v-for="(item, index) in value" :key="index"
       :value="item"
+      :is-self-profile="isSelfProfile"
     />
 
     <!-- Лоудер инициализации -->
@@ -37,6 +38,11 @@ export default {
       type: [Number, String],
       default: null
     },
+    // Свой ли профиль
+    isSelfProfile: {
+      type: Boolean,
+      default: false
+    }
   },
   data: () => ({
     // Точка для пагинации
