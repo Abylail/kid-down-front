@@ -27,5 +27,14 @@ export const actions = {
   // Передача информации о посте до перехода
   bridgeInfo({commit, state}, postInfo) {
     commit("set", ["postInfo", postInfo]);
+  },
+
+  // Удалить пост
+  async deletePost({ commit, state}, postCode) {
+    await this.$api.$delete(`/api/post/delete/${postCode}`)
+      .then(({}) => {
+        commit("profiles/feed/deletePost", postCode, {root: true});
+        commit("feed/main/deletePost", postCode, {root: true});
+      })
   }
 }

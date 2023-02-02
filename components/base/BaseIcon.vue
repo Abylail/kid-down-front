@@ -1,6 +1,6 @@
 <template>
   <span
-    class="mdi"
+    class="base-icon mdi"
     :class="[iconName]"
     :style="[{fontSize: `${size}px`}]"
     v-on="$listeners"
@@ -27,4 +27,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "@mdi/font/css/materialdesignicons.min.css";
+.base-icon {
+  color: var(--color-white);
+}
 </style>

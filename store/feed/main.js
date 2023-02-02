@@ -30,6 +30,15 @@ export const mutations = {
     state[namespace] = [...state[namespace], ...value];
   },
 
+  // Удалить пост по коду
+  deletePost(state, postCode) {
+    const postIndex = state.mainList.findIndex(({code}) => code === postCode);
+    if (postIndex < 0) return;
+    let newFeed = state.mainList.slice();
+    newFeed.splice(postIndex, 1);
+    state.mainList = newFeed;
+  },
+
   // Очистить
   clear(state, isAuth = false) {
     state.mainList = [];

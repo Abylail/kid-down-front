@@ -16,9 +16,18 @@ a {
   &:hover {opacity: .7}
 }
 
-input, textarea {
-  user-select: auto;
+input, textarea, button {
   outline: none;
+  background: none;
+  border: none;
+
+  &:active {
+    -webkit-tap-highlight-color: transparent;
+    tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
 }
 
 // Стиль для лайка
@@ -32,12 +41,12 @@ input, textarea {
     color: var(--text-color-primary);
   }
   &--liked {
-    color: var(--color-red);
+    color: var(--color-red) !important;
   }
 
   &:active {
     .like--default {
-      color: var(--color-red);
+      color: var(--color-red) !important;
     }
     .like--liked {
       color: var(--text-color-primary);

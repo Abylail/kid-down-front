@@ -1,8 +1,8 @@
 <template>
   <header class="simple-header">
-    <div class="simple-header__left">
+    <button class="simple-header__left">
       <base-icon @click="goBackHandle()">mdi-arrow-left</base-icon>
-    </div>
+    </button>
     <div class="simple-header__center">
       <h2 class="simple-header__title"><slot/></h2>
     </div>

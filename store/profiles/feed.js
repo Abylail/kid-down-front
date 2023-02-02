@@ -36,6 +36,15 @@ export const mutations = {
     state[namespace]++;
   },
 
+  // Удалить пост по коду
+  deletePost(state, postCode) {
+    const postIndex = state.myProfileFeed.findIndex(({code}) => code === postCode);
+    if (postIndex < 0) return;
+    let newFeed = state.myProfileFeed.slice();
+    newFeed.splice(postIndex, 1);
+    state.myProfileFeed = newFeed;
+  },
+
   // Очистить чужой профиль
   clearOthersProfileFeed(state, username) {
     state.profileUsername = username;

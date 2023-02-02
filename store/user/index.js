@@ -73,7 +73,7 @@ export const actions = {
   // Выйти из аккаунта
   logout({ commit }) {
     commit("set", ["userInfo", null]);
-    this.$cookies.remove("userToken");
+    // this.$cookies.remove("userToken");
   },
 
   // Сохранения информации профиля (имя + описание)

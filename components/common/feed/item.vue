@@ -1,5 +1,6 @@
 <template>
-  <div class="feed-item" @click="contentClickHandle">
+  <slide>
+  <div class="feed-item" v-if="!isDeleted" @click="contentClickHandle">
 
       <!-- Верхняя часть (Аватарка, Имя автора, юзернейм, темв) -->
       <div class="feed-item__head">
@@ -94,6 +95,7 @@
     </fade>
 
   </div>
+  </slide>
 </template>
 
 <script>
@@ -101,9 +103,10 @@ import BaseIcon from "@/components/base/BaseIcon";
 import Fade from "@/components/transitions/fade";
 import {mapActions, mapGetters} from "vuex";
 import BaseOptions from "@/components/base/BaseOptions";
+import Slide from "@/components/transitions/slide";
 export default {
   name: "item",
-  components: {BaseOptions, BaseIcon, Fade},
+  components: {Slide, BaseOptions, BaseIcon, Fade},
   data: () => ({
     // Лайкнуто ли (только с изменениями)
     liked: null,
@@ -113,6 +116,11 @@ export default {
     innerLikesCount: null,
     // Таймаут для лайка
     likeTimeout: null,
+
+    // Удален ли пост
+    isDeleted: false,
+    // Загрузка удаления
+    deleteLoading: false,
 
     // Колличество кликов
     contentClickCount: 0,
@@ -205,6 +213,7 @@ export default {
       _like: "post/likes/like",
       _unlike: "post/likes/unlike",
       _bridgeInfo: "post/bridgeInfo",
+      _deletePost: "post/deletePost"
     }),
 
     // Клик по контенту
@@ -310,13 +319,16 @@ export default {
     },
 
     // Удалить себя
-    deleteHandle() {
+    async deleteHandle() {
       this.$emit("delete", this.myValue);
+      this.isDeleted = true;
+      this.deleteLoading = true;
+      await this._deletePost(this.myValue.code);
+      this.deleteLoading = false;
     },
 
     // Закрепить себя
     pinHandle() {
-      debugger
       this.$toast("В разарботке)");
       this.$emit("pin", this.myValue);
     }
