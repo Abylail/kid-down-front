@@ -36,13 +36,12 @@ export const mutations = {
     state[namespace]++;
   },
 
+
   // Удалить пост по коду
   deletePost(state, postCode) {
     const postIndex = state.myProfileFeed.findIndex(({code}) => code === postCode);
     if (postIndex < 0) return;
-    let newFeed = state.myProfileFeed.slice();
-    newFeed.splice(postIndex, 1);
-    state.myProfileFeed = newFeed;
+    state.myProfileFeed.splice(postIndex, 1);
   },
 
   // Очистить чужой профиль
@@ -52,6 +51,12 @@ export const mutations = {
     state.profilePage = 1;
     state.profileFeedHaveMore = true;
   },
+  // Очистить мой профиль
+  clearMyProfileFeed(state) {
+    state.myProfileFeed = [];
+    state.myProfilePage = 1;
+    state.myProfileFeedHaveMore = true;
+  }
 }
 
 export const actions = {
@@ -63,8 +68,7 @@ export const actions = {
 
   // Получить ленту личного профиля
   async fetchMyProfileFeed({ state, commit, rootGetters }, {username, isInitial}) {
-    if (state.myProfileFeed.length && isInitial) return;
-    else if (state.myProfileFeed.length && isInitial) return;
+    if (state.myProfileFeed.length > 10 && isInitial) return;
     else if (!state.myProfileFeedHaveMore) return;
     await this.$api.$get(`/api/feed/user/${username}`, {params: {page: state.myProfilePage}})
       .then(({err, body}) => {

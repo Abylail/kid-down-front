@@ -14,6 +14,10 @@
 <!--    <profile-tabs v-model="activeTab" :tabs="tabs"/>-->
     <profile-tabs-content :value="activeTab" :tabs="tabs">
       <template v-slot:posts>
+        <nuxt-link v-if="isSelfAccount" class="profile__create-post" to="/post/create?redirect=/user">
+          создать пост
+          <base-icon>mdi-pencil-box-outline</base-icon>
+        </nuxt-link>
         <profile-feed :username="username"/>
       </template>
     </profile-tabs-content>
@@ -35,9 +39,11 @@ import ProfileAvatarModal from "@/components/common/profile/editModals/profileAv
 import ProfileWallpaperModal from "@/components/common/profile/editModals/profileWallpaperModal";
 import ProfileTabsContent from "@/components/common/profile/profileTabsContent";
 import ProfileFeed from "@/components/common/profile/profileFeed";
+import BaseIcon from "@/components/base/BaseIcon";
 
 export default {
   components: {
+    BaseIcon,
     ProfileFeed,
     ProfileTabsContent,
     ProfileWallpaperModal, ProfileAvatarModal, ProfileInfoEditModal, ProfileTabs, ProfileHeader, ProfileInfo},
@@ -141,5 +147,20 @@ export default {
 <style lang="scss" scoped>
 .profile {
   padding-top: var(--header-height);
+
+  &__create-post {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 12px;
+    padding: 8px 8px;
+    border-radius: 5px;
+    background: var(--background-color-secondary);
+    color: var(--text-color-secondary);
+    font-size: var(--font-size-subtext);
+    line-height: var(--font-size-text);
+    text-decoration: none;
+    text-align: center;
+  }
 }
 </style>

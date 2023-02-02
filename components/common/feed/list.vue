@@ -3,7 +3,7 @@
 
     <!-- Посты -->
     <item
-      v-for="(item, index) in value" :key="index"
+      v-for="(item, index) in value" :key="`${item.code}-${index}`"
       :value="item"
       :is-self-profile="isSelfProfile"
     />

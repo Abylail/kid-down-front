@@ -149,7 +149,7 @@ export default {
     async submitPost() {
       this.isLoading = true;
       await this._createPost(this.form);
-      this.$router.push("/");
+      this.$router.push(this.$route.query?.redirect || "/");
       this.isLoading = false;
     }
   },

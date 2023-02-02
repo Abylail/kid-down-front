@@ -16,13 +16,14 @@ export const mutations = {
 export const actions = {
 
   // Создать пост
-  async createPost({}, {text, picture, custom_category, category_code}) {
+  async createPost({ commit }, {text, picture, custom_category, category_code}) {
     let myPicture = picture && {...picture};
     if (myPicture) myPicture.buffer = myPicture.buffer.split(",")[1];
     await this.$api.$post("/api/post/add", {text, picture: myPicture, custom_category, category_code})
       .then(({err, body}) => {
         if (!err) {
-          console.log(body);
+          // Очищаю свой профиль что бы он заново запросился
+          commit("profiles/feed/clearMyProfileFeed", null, {root: true})
         }
       })
   },

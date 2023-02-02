@@ -33,8 +33,10 @@ export const actions = {
   async deletePost({ commit, state}, postCode) {
     await this.$api.$delete(`/api/post/delete/${postCode}`)
       .then(({}) => {
-        commit("profiles/feed/deletePost", postCode, {root: true});
-        commit("feed/main/deletePost", postCode, {root: true});
+        setTimeout(() => {
+          commit("profiles/feed/deletePost", postCode, {root: true});
+          commit("feed/main/deletePost", postCode, {root: true});
+        }, 100)
       })
   }
 }

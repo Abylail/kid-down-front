@@ -1,5 +1,5 @@
 <template>
-  <slide>
+  <fade>
   <div class="feed-item" v-if="!isDeleted" @click="contentClickHandle">
 
       <!-- Верхняя часть (Аватарка, Имя автора, юзернейм, темв) -->
@@ -95,18 +95,17 @@
     </fade>
 
   </div>
-  </slide>
+  </fade>
 </template>
 
 <script>
 import BaseIcon from "@/components/base/BaseIcon";
-import Fade from "@/components/transitions/fade";
 import {mapActions, mapGetters} from "vuex";
 import BaseOptions from "@/components/base/BaseOptions";
-import Slide from "@/components/transitions/slide";
+import Fade from "@/components/transitions/fade";
 export default {
   name: "item",
-  components: {Slide, BaseOptions, BaseIcon, Fade},
+  components: {BaseOptions, BaseIcon, Fade},
   data: () => ({
     // Лайкнуто ли (только с изменениями)
     liked: null,
